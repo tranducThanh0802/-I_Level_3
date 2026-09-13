@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Team — Mình đang làm gì</title>
+<style>
+  :root{
+    --bg:#f4f6f9; --card:#fff; --ink:#1a1d21; --muted:#606a76; --line:#e6e9ee;
+    --blue:#2f6feb; --green:#17a05a; --amber:#d69200; --red:#e05353; --soft:#eef2f7;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f1115; --card:#181b21; --ink:#eceef1; --muted:#9aa3af; --line:#272c34;
+      --blue:#6ea1ff; --green:#3bd07f; --amber:#f0b52a; --red:#ff6b6b; --soft:#20252d;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:860px;margin:0 auto;padding:26px 18px 70px}
+  h1{font-size:24px;margin:0 0 2px}
+  .sub{color:var(--muted);margin:0 0 22px}
+
+  /* progress */
+  .progress{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:22px}
+  .progress .label{font-size:14px;color:var(--muted);margin-bottom:10px}
+  .track{display:flex;gap:6px}
+  .seg{flex:1;height:12px;border-radius:6px;background:var(--soft)}
+  .seg.on{background:var(--green)}
+  .seg.now{background:var(--amber)}
+  .rungs{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--muted)}
+  .rungs b{color:var(--ink)}
+
+  /* the big next action */
+  .next{background:linear-gradient(135deg,var(--blue),#5b8cff);color:#fff;border-radius:18px;
+    padding:22px 24px;margin-bottom:26px;box-shadow:0 8px 24px rgba(47,111,235,.25)}
+  .next .kicker{font-size:13px;opacity:.85;letter-spacing:.5px;text-transform:uppercase}
+  .next h2{font-size:22px;margin:6px 0 6px}
+  .next p{margin:0;opacity:.95}
+
+  .sec{font-size:15px;font-weight:700;margin:26px 0 12px;display:flex;align-items:center;gap:8px}
+  .emoji{font-size:18px}
+
+  .row{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:14px 16px;margin-bottom:10px}
+  .mark{flex:none;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:15px;font-weight:700;color:#fff}
+  .m-done{background:var(--green)} .m-now{background:var(--amber)} .m-todo{background:#b0b7c2}
+  .row .txt{flex:1}
+  .row .txt b{display:block}
+  .row .txt small{color:var(--muted)}
+
+  .cols{display:grid;grid-template-columns:1fr;gap:20px}
+  @media(min-width:640px){.cols{grid-template-columns:1fr 1fr}}
+
+  .warn{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--red);
+    border-radius:12px;padding:12px 16px;margin-bottom:10px}
+  .warn b{display:block}
+  .warn small{color:var(--muted)}
+
+  details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 16px;margin-top:16px}
+  summary{cursor:pointer;padding:10px 0;font-weight:600}
+  details code{background:var(--soft);padding:1px 6px;border-radius:6px;font-size:13.5px}
+  details li{margin:6px 0}
+  footer{margin-top:34px;color:var(--muted);font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🤖 Agent Team của mình</h1>
+  <p class="sub">Đội "robot" giúp làm việc lặp lại của app iOS. Mình vẫn là người duyệt và bấm nút cuối. · 13/09/2026</p>
+  <p style="display:flex;gap:8px;flex-wrap:wrap">
+    <a href="board.html" style="display:inline-block;background:#17a05a;color:#fff;text-decoration:none;padding:8px 16px;border-radius:10px;font-weight:600;font-size:14px">📊 Board — trạng thái &amp; tiến độ →</a>
+    <a href="exchanges.html" style="display:inline-block;background:#2f6feb;color:#fff;text-decoration:none;padding:8px 16px;border-radius:10px;font-weight:600;font-size:14px">💬 Các cuộc trao đổi →</a>
+  </p>
+
+  <!-- ĐANG Ở ĐÂU -->
+  <div class="progress">
+    <div class="label">Mình đang ở đâu trên chặng đường?</div>
+    <div class="track">
+      <div class="seg now"></div>
+      <div class="seg"></div>
+      <div class="seg"></div>
+      <div class="seg"></div>
+    </div>
+    <div class="rungs">
+      <span><b>Bước 1 · đang tới</b><br>1 robot làm 1 việc</span>
+      <span>Bước 2 · đích<br>tự chạy cả luồng</span>
+      <span>Bước 3<br>tự nhận việc</span>
+      <span>Bước 4<br>nhiều robot</span>
+    </div>
+  </div>
+
+  <!-- VIỆC TIẾP THEO -->
+  <div class="next">
+    <div class="kicker">👉 Việc tiếp theo của bạn</div>
+    <h2>Cho biết code app iOS nằm ở đâu</h2>
+    <p>Robot cần biết lệnh build/test thật và crash lấy từ đâu thì mới chạy được. Chỉ Claude đường dẫn thư mục code app (hoặc nhờ dev chỉ giúp). Đây là nút thắt — xong cái này là dựng được robot đầu tiên.</p>
+  </div>
+
+  <!-- ĐỘI HÌNH -->
+  <div class="sec"><span class="emoji">👥</span> Đội hình (đã chốt)</div>
+  <div class="row"><div class="mark" style="background:#3b7bd0">👤</div><div class="txt">
+    <b>PO — là NGƯỜI</b><small>Quyết chức năng, sửa &amp; chốt spec, chịu trách nhiệm hướng đi. Duyệt &amp; merge &amp; đẩy store (robot không được làm).</small></div></div>
+  <div class="row"><div class="mark" style="background:#7a8794">📄</div><div class="txt">
+    <b>BE — chỉ ĐỌC</b><small>Robot đọc tài liệu backend, phát hiện khi đổi, không tự sửa.</small></div></div>
+  <div class="row"><div class="mark" style="background:#8a5cf6">🤖</div><div class="txt">
+    <b>PO-agent</b><small>Soạn nháp spec cho đủ chi tiết + giám sát: canh mọi robot hiểu đúng spec &amp; đi đúng hướng, hỏi lại chỗ chưa rõ (không rõ thì hỏi người, không bịa).</small></div></div>
+  <div class="row"><div class="mark" style="background:#8a5cf6">🤖</div><div class="txt">
+    <b>Soát spec</b><small>Soi lại spec độc lập, đối chiếu tài liệu BE, chuẩn bị câu hỏi cho PO.</small></div></div>
+  <div class="row"><div class="mark" style="background:#8a5cf6">🤖</div><div class="txt">
+    <b>UI/UX</b><small>Phác thảo/dịch design trên <b>Penpot tự host</b> (không limit); người duyệt hình, máy kiểm bằng so ảnh.</small></div></div>
+  <div class="row"><div class="mark" style="background:#8a5cf6">🤖</div><div class="txt">
+    <b>Dev (Mobile)</b><small>Chia task, code app; kéo design về một mối qua Penpot → sinh SwiftUI theo component của team.</small></div></div>
+  <div class="row"><div class="mark" style="background:#8a5cf6">🤖</div><div class="txt">
+    <b>Fix bug</b><small>Nhận crash → tra sổ bug cũ → tìm nguyên nhân gốc → sửa + viết test chống tái phát.</small></div></div>
+  <div class="row"><div class="mark" style="background:#8a5cf6">🤖</div><div class="txt">
+    <b>Test</b><small>Viết kịch bản đủ 4 trạng thái, chạy thật, quay video luồng vừa sửa.</small></div></div>
+  <div class="row"><div class="mark" style="background:#8a5cf6">🤖</div><div class="txt">
+    <b>Senior UI/UX</b><small>Đánh giá UI vừa sinh: đẹp không / hợp spec không / hợp UI đang làm không. Phần đo được máy chốt; "đẹp" tổng thể thì người duyệt cuối.</small></div></div>
+  <div class="row"><div class="mark" style="background:#8a5cf6">🤖</div><div class="txt">
+    <b>Reviewer (phản biện)</b><small>Soi sản phẩm để bác bỏ; máy kiểm chốt, không được thì hỏi người.</small></div></div>
+  <p style="color:var(--muted);font-size:13px;margin-top:2px">Tổng: <b>8 robot</b> + PO (người) + BE (đọc). Con điều phối chỉ cần khi lên Bước 4.</p>
+
+  <!-- ĐÃ LÀM -->
+  <div class="sec"><span class="emoji">✅</span> Đã làm xong</div>
+  <div class="row"><div class="mark m-done">✓</div><div class="txt">
+    <b>Đặt nền &amp; luật chơi</b>
+    <small>Viết ra: robot được làm gì, cấm làm gì, chỗ nào phải hỏi người. Có sổ ghi bug để lần sau khỏi sửa lại từ đầu.</small></div></div>
+  <div class="row"><div class="mark m-done">✓</div><div class="txt">
+    <b>Lưu toàn bộ hồ sơ dự án</b>
+    <small>Để sau này ai vào cũng hiểu đúng, không đi sai hướng: mục tiêu, các quyết định &amp; lý do, yêu cầu gốc.</small></div></div>
+  <div class="row"><div class="mark m-done">✓</div><div class="txt">
+    <b>Tìm hiểu người khác đã làm thế nào</b>
+    <small>Kết quả: hướng mình chọn là đúng. Lưu ý: đừng để robot tự "lách" cho test xanh, và iOS khó hơn mặt bằng chung.</small></div></div>
+  <div class="row"><div class="mark m-done">✓</div><div class="txt">
+    <b>Hướng dẫn dựng robot sửa bug cho iOS</b>
+    <small>Đã có cách làm cụ thể + kế hoạch tuần 1 (từng ngày). Chờ có thông tin code app là bắt tay được ngay.</small></div></div>
+  <div class="row"><div class="mark m-done">✓</div><div class="txt">
+    <b>Lập "nơi phản biện" cho các robot</b>
+    <small>Một robot làm, một robot soi lại để bác bỏ. Kết luận do máy kiểm chốt; chỗ máy không quyết được thì hỏi người. Không để robot tự đồng ý với nhau.</small></div></div>
+  <div class="row"><div class="mark m-done">✓</div><div class="txt">
+    <b>Chốt đội hình đầy đủ (13 quyết định)</b>
+    <small>PO người + BE đọc + 8 robot. Có PO-agent (soạn spec + giám sát), UI/UX nối Penpot, Senior UI/UX chấm giao diện. Mỗi quyết định ghi rõ lý do để sau khỏi cãi lại.</small></div></div>
+  <div class="row"><div class="mark m-done">✓</div><div class="txt">
+    <b>Tra công cụ AI làm UI/UX + số liệu Penpot cho mobile</b>
+    <small>Kết luận thật: không có công cụ Penpot→SwiftUI tự động (phải ghép tokens + LLM + so ảnh); và gần như không có số liệu hiệu quả riêng cho mobile → nên chạy pilot tự đo, đừng tin ROI công bố.</small></div></div>
+  <div class="row"><div class="mark m-done">✓</div><div class="txt">
+    <b>Vẽ thử 1 màn UI + rubric chấm giao diện</b>
+    <small>Màn Đăng nhập mẫu (SVG import được vào Penpot) + bảng tiêu chí để Senior UI/UX chấm đẹp/hợp spec/hợp design system.</small></div></div>
+
+  <!-- SẮP LÀM -->
+  <div class="sec"><span class="emoji">📋</span> Sắp làm (theo thứ tự)</div>
+  <div class="row"><div class="mark m-todo">1</div><div class="txt"><b>Điền thông tin repo iOS thật</b><small>Sau khi bạn chỉ đường dẫn code.</small></div></div>
+  <div class="row"><div class="mark m-todo">2</div><div class="txt"><b>Chốt vài điều chỉnh từ nghiên cứu</b><small>Ví dụ: không cho robot tự sửa bài test.</small></div></div>
+  <div class="row"><div class="mark m-todo">3</div><div class="txt"><b>Dựng robot sửa bug đầu tiên</b><small>Thử trên đúng 1 lỗi có sẵn manh mối.</small></div></div>
+  <div class="row"><div class="mark m-todo">4</div><div class="txt"><b>Kiểm tra "trí nhớ" của robot</b><small>Báo lại 1 bug cũ, xem nó có nhớ cách sửa không.</small></div></div>
+
+  <!-- CẦN CHÚ Ý -->
+  <div class="sec"><span class="emoji">⚠️</span> Cần chú ý</div>
+  <div class="warn"><b>Chưa có thông tin code app iOS</b><small>Đây là thứ đang chặn. Cần bạn cung cấp trước.</small></div>
+  <div class="warn"><b>Chưa khoá bằng máy chuyện robot tự sửa test</b><small>Bạn chọn "để quy ước". Có thể bật khoá cứng sau nếu muốn chắc chắn.</small></div>
+  <div class="warn"><b>iOS vốn khó với robot</b><small>Đừng kỳ vọng như các số liệu Python. Ưu tiên kiểm bằng ảnh chụp so sánh.</small></div>
+  <div class="warn"><b>Chưa có robot nào chạy thật</b><small>Hiện mới xong phần nền, hồ sơ &amp; đội hình trên giấy.</small></div>
+  <div class="warn"><b>Penpot tự host cần team cài</b><small>Cho con UI/UX. Là việc hạ tầng, làm SAU khi robot Fix bug chạy ổn — không phải việc trước mắt.</small></div>
+
+  <details>
+    <summary>📁 Xem các file trong dự án (dành cho dev)</summary>
+    <ul>
+      <li><code>CLAUDE.md</code> — luật &amp; context, đọc đầu mỗi phiên</li>
+      <li><code>agent-team/PROJECT-CONTEXT.md</code> — tóm tắt &amp; hiện trạng</li>
+      <li><code>agent-team/DECISIONS.md</code> — các quyết định + lý do</li>
+      <li><code>agent-team/docs/original-spec.md</code> — yêu cầu gốc (không sửa)</li>
+      <li><code>agent-team/docs/prior-art-research.md</code> — nghiên cứu bối cảnh</li>
+      <li><code>agent-team/docs/build-bugfix-agent-guide.md</code> — cách dựng robot Fix bug + kế hoạch tuần 1</li>
+      <li><code>agent-team/docs/ai-uiux-tooling-research.md</code> — git/công cụ AI làm UI/UX</li>
+      <li><code>agent-team/docs/penpot-mobile-effectiveness.md</code> — số liệu Penpot cho mobile</li>
+      <li><code>agent-team/design-samples/login-screen.svg</code> — màn UI mẫu (import Penpot)</li>
+      <li><code>agent-team/reviews/</code> — nơi phản biện (blackboard) + ví dụ</li>
+      <li><code>agent-team/memory/</code> — luật lõi, tri thức dự án (cần điền), sổ bug, playbook (rubric UI/UX)</li>
+      <li><code>agent-team/logs/</code> — mẫu ghi số liệu đánh giá</li>
+    </ul>
+  </details>
+
+  <footer>Nhấp đúp <code>dashboard.html</code> để mở lại. Trang cập nhật thủ công khi có tiến triển.</footer>
+</div>
+</body>
+</html>

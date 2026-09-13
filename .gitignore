@@ -1,0 +1,7 @@
+# Bí mật — KHÔNG đưa lên repo chung
+scripts/discord_config.json
+scripts/.discord_state.json
+
+# Rác hệ thống
+.DS_Store
+**/.DS_Store

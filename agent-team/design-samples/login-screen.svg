@@ -1,0 +1,55 @@
+<svg width="375" height="812" viewBox="0 0 375 812" fill="none" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif">
+  <!-- Background -->
+  <rect width="375" height="812" fill="#FFFFFF"/>
+
+  <!-- Status bar -->
+  <text x="28" y="34" font-size="14" font-weight="600" fill="#1A1D21">9:41</text>
+  <g fill="#1A1D21">
+    <rect x="300" y="24" width="16" height="10" rx="2"/>
+    <rect x="322" y="24" width="16" height="10" rx="2"/>
+    <rect x="344" y="22" width="22" height="12" rx="3" fill="none" stroke="#1A1D21" stroke-width="1.5"/>
+    <rect x="346" y="24" width="16" height="8" rx="1.5"/>
+  </g>
+
+  <!-- Logo -->
+  <circle cx="187.5" cy="150" r="34" fill="#2F6FEB"/>
+  <path d="M175 150 l9 9 l17 -18" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Title + subtitle -->
+  <text x="187.5" y="222" font-size="24" font-weight="700" fill="#1A1D21" text-anchor="middle">Chào mừng trở lại</text>
+  <text x="187.5" y="250" font-size="15" font-weight="400" fill="#6B7280" text-anchor="middle">Đăng nhập để tiếp tục</text>
+
+  <!-- Email field -->
+  <text x="28" y="300" font-size="13" font-weight="600" fill="#374151">Email</text>
+  <rect x="28" y="312" width="319" height="52" rx="12" fill="#F4F6F9" stroke="#E5E8EC" stroke-width="1"/>
+  <text x="44" y="344" font-size="15" fill="#9AA3AF">ban@apero.vn</text>
+
+  <!-- Password field -->
+  <text x="28" y="392" font-size="13" font-weight="600" fill="#374151">Mật khẩu</text>
+  <rect x="28" y="404" width="319" height="52" rx="12" fill="#F4F6F9" stroke="#E5E8EC" stroke-width="1"/>
+  <text x="44" y="436" font-size="15" fill="#9AA3AF">••••••••</text>
+  <path d="M312 424 c8 0 14 6 16 6 c-2 0 -8 6 -16 6 c-8 0 -14 -6 -16 -6 c2 0 8 -6 16 -6 z" fill="none" stroke="#9AA3AF" stroke-width="1.5"/>
+  <circle cx="312" cy="430" r="3.5" fill="none" stroke="#9AA3AF" stroke-width="1.5"/>
+
+  <!-- Forgot password -->
+  <text x="347" y="484" font-size="13" font-weight="600" fill="#2F6FEB" text-anchor="end">Quên mật khẩu?</text>
+
+  <!-- Primary button -->
+  <rect x="28" y="512" width="319" height="54" rx="14" fill="#2F6FEB"/>
+  <text x="187.5" y="546" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">Đăng nhập</text>
+
+  <!-- Divider -->
+  <line x1="28" y1="598" x2="165" y2="598" stroke="#E5E8EC" stroke-width="1"/>
+  <text x="187.5" y="603" font-size="13" fill="#9AA3AF" text-anchor="middle">hoặc</text>
+  <line x1="210" y1="598" x2="347" y2="598" stroke="#E5E8EC" stroke-width="1"/>
+
+  <!-- Secondary button (outline) -->
+  <rect x="28" y="628" width="319" height="54" rx="14" fill="#FFFFFF" stroke="#2F6FEB" stroke-width="1.5"/>
+  <text x="187.5" y="662" font-size="16" font-weight="700" fill="#2F6FEB" text-anchor="middle">Tạo tài khoản</text>
+
+  <!-- Footer -->
+  <text x="187.5" y="748" font-size="12" fill="#9AA3AF" text-anchor="middle">Bằng việc tiếp tục, bạn đồng ý với Điều khoản dịch vụ</text>
+
+  <!-- Home indicator -->
+  <rect x="127.5" y="794" width="120" height="5" rx="2.5" fill="#1A1D21"/>
+</svg>

@@ -1,0 +1,105 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agent Team (bộ khung mẫu) — Trao đổi</title>
+<style>
+ :root{--bg:#f4f6f9;--card:#fff;--ink:#1a1d21;--muted:#606a76;--line:#e6e9ee;--blue:#2f6feb;--soft:#eef2f7}
+ @media(prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#171a20;--ink:#eceef1;--muted:#9aa3af;--line:#262a31;--blue:#6ea1ff;--soft:#20252d}}
+ *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);
+   font:15px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+ .wrap{max-width:900px;margin:0 auto;padding:26px 18px 70px}
+ h1{font-size:23px;margin:0 0 2px} .top{color:var(--muted);margin:0 0 20px;font-size:14px}
+ .sec{font-size:16px;margin:26px 0 12px}
+ .card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;padding:4px 16px}
+ summary{cursor:pointer;padding:12px 0;list-style:none}
+ summary::-webkit-details-marker{display:none}
+ summary b{font-size:15px}
+ .chips{display:inline-flex;gap:6px;flex-wrap:wrap;margin:6px 0 0}
+ .chip{font-size:12px;padding:2px 9px;border-radius:999px;font-weight:600}
+ .fn{display:block;font-size:12px;color:var(--muted);margin-top:4px}
+ .ex{font-size:11px;font-weight:700;color:#d69200;background:#d6920022;padding:2px 7px;border-radius:6px;margin-left:6px}
+ .body{border-top:1px solid var(--line);padding:12px 0 8px}
+ .body h2{font-size:16px;margin:14px 0 6px} .body h3{font-size:14px;margin:14px 0 6px}
+ .body h3.q{color:#e05353} .body h4{font-size:13px;margin:10px 0 4px;color:var(--muted)}
+ .body p{margin:6px 0} .body ul{margin:6px 0;padding-left:22px}
+ .body ul.chk{list-style:none;padding-left:2px} .body li.c{margin:4px 0}
+ .body li.c .bx{color:var(--blue)} .body li.c.done{color:var(--muted);text-decoration:line-through}
+ .body code{background:var(--soft);padding:1px 6px;border-radius:6px;font-size:13px}
+ .body table{border-collapse:collapse;margin:8px 0;font-size:13.5px;display:block;overflow-x:auto}
+ .body th,.body td{border:1px solid var(--line);padding:5px 9px;text-align:left}
+ .body th{background:var(--soft)} .body hr{border:0;border-top:1px solid var(--line);margin:10px 0}
+ .empty{color:var(--muted)} a{color:var(--blue)}
+ .back{display:inline-block;margin-bottom:14px;font-size:14px}
+</style></head><body><div class="wrap">
+ <a class="back" href="dashboard.html">← Bảng điều khiển</a>
+ <h1>💬 Agent Team (bộ khung mẫu) — Trao đổi giữa các agent</h1>
+ <p class="top">2 cuộc · cập nhật 2026-09-13 18:16. Bấm vào từng thẻ để mở/đóng. Chạy lại
+   <code>python3 scripts/build_exchanges.py</code> để làm mới.</p>
+ <section><h2 class="sec">💬 Việc đang làm &amp; bàn giao (workspace)</h2>
+        <details class="card" >
+          <summary><b>feature-coupon-checkout (IIP-1234)</b> <span class="ex">VÍ DỤ MẪU</span><div class="chips"><span class="chip" style="background:#7a879422;color:#7a8794">feature</span><span class="chip" style="background:#7a879422;color:#7a8794">dev</span><span class="chip" style="background:#e0535322;color:#e05353">waiting-human</span><span class="chip" style="background:#7a879422;color:#7a8794">2026-09-13 15:20</span></div>
+            <span class="fn">TASK-EXAMPLE.md</span></summary>
+          <div class="body"><h3>Kế hoạch (thứ tự task, cái nào chờ cái nào)</h3>
+<p>1. [x] spec-drafter soạn nháp spec màn &quot;Áp mã giảm giá&quot;</p>
+<p>2. [x] PO(người) sửa &amp; chốt spec</p>
+<p>3. [x] soat-spec soi + đối chiếu docs BE</p>
+<p>4. [ ] dev code màn + đủ 4 trạng thái (đang làm)</p>
+<p>5. [ ] senior-uiux chấm giao diện (chờ #4)</p>
+<p>6. [ ] test viết kịch bản + chạy + quay video (chờ #4)</p>
+<h3>Bước hiện tại</h3>
+<p>dev đang code trạng thái &quot;lỗi&quot; và &quot;mất mạng&quot; của màn áp coupon.</p>
+<h3>Bàn giao (log giao việc giữa các con)</h3>
+<ul>
+<li>2026-09-13 10:05 spec-drafter → PO(người): nháp spec xong, nhờ chốt</li>
+<li>2026-09-13 11:30 PO(người) → soat-spec: spec đã chốt, nhờ soi</li>
+<li>2026-09-13 13:10 soat-spec → dev: spec đạt; 1 câu hỏi chặn về mã hết hạn (xem dưới)</li>
+<li>2026-09-13 15:20 dev → PO(người): câu hỏi chặn về hành vi khi coupon hết hạn</li>
+</ul>
+<h3 class="q">Câu hỏi lên người (mẫu 30 giây)</h3>
+<ul class='chk'>
+<li class='c'><span class='bx'>☐</span> [CHẶN] Coupon hết hạn thì hiện gì?</li>
+</ul>
+<p>  · Cách A: ẩn ô nhập → hệ quả: user không hiểu vì sao</p>
+<p>  · Cách B: hiện lỗi &quot;Mã đã hết hạn&quot; đỏ dưới ô → hệ quả: rõ ràng, thêm 1 chuỗi dịch</p>
+<p>  · Nghiêng: B, vì hợp trạng thái &quot;lỗi&quot; bắt buộc</p>
+<p>  · Quá hạn không trả lời: làm theo B, ghi giả định vào PR</p>
+<ul class='chk'>
+<li class='c done'><span class='bx'>☑</span> [ĐOÁN ĐƯỢC] Độ dài tối đa mã coupon: giả định 20 ký tự (đã chạy tiếp, chờ xác nhận trong PR)</li>
+</ul>
+<h3>Đang chờ</h3>
+<p>Chờ PO trả lời câu hỏi coupon hết hạn. Trong lúc chờ, dev vẫn code trạng thái loading &amp; rỗng (không liên quan).</p></div>
+        </details></section><section><h2 class="sec">🔎 Phản biện &amp; kết luận (reviews)</h2>
+        <details class="card" >
+          <summary><b>player-nil-url-crash (fingerprint a1b2c3d4)</b> <span class="ex">VÍ DỤ MẪU</span><div class="chips"><span class="chip" style="background:#7a879422;color:#7a8794">bugfix</span><span class="chip" style="background:#17a05a22;color:#17a05a">machine-decided</span><span class="chip" style="background:#7a879422;color:#7a8794">machine</span></div>
+            <span class="fn">review-EXAMPLE.md</span></summary>
+          <div class="body"><h3>Giả thuyết (con làm)</h3>
+<p>Crash <code>NSInvalidArgumentException / AVPlayerItem nil URL</code> do <code>PlayerService.load(url:)</code> force-unwrap</p>
+<p><code>streamURL</code> khi mạng mất giữa lúc fetch. Bằng chứng: <code>blame_frame</code> = <code>PlayerViewModel.play</code>; trace ngược</p>
+<p>thấy <code>streamURL</code> về nil ở nhánh mất mạng nhưng nút Play vẫn bật. Nguyên nhân gốc, không phải lỗi AVPlayer.</p>
+<h3>Phản biện (con phản biện — nhiệm vụ: bác bỏ)</h3>
+<ul class='chk'>
+<li class='c done'><span class='bx'>☑</span> Chỗ nghi sai 1: &quot;Có chắc chỉ do mất mạng? BE trả 200 với body rỗng thì sao?&quot; → con làm bổ sung:</li>
+</ul>
+<p>      đã Grep, cả hai nhánh đều dẫn tới <code>streamURL == nil</code>; fix bao cả hai.</p>
+<ul class='chk'>
+<li class='c done'><span class='bx'>☑</span> Trường hợp chưa phủ: trạng thái <strong>mất mạng</strong> và <strong>lỗi</strong> — test phải phủ cả hai. → thêm 2 case.</li>
+<li class='c done'><span class='bx'>☑</span> Rủi ro bán kính ảnh hưởng: <code>load(url:)</code> còn gọi từ <code>DownloadService</code> → đổi sang non-optional</li>
+</ul>
+<p>      buộc sửa 1 call site nữa; đã kiểm, không phá gì.</p>
+<h3>Máy kiểm (bên chốt)</h3>
+<table>
+<tr><th>Tín hiệu</th><th>Kết quả</th></tr>
+<tr><td>build</td><td>pass</td></tr>
+<tr><td>test cũ (full suite)</td><td>pass</td></tr>
+<tr><td>test chống tái phát <code>test_repro_a1b2c3d4</code></td><td>fail-trước ✓ / pass-sau ✓</td></tr>
+<tr><td>lint --strict</td><td>pass</td></tr>
+<tr><td>so ảnh</td><td>advisory (chưa gắn cổng cứng)</td></tr>
+</table>
+<h3>Kết luận</h3>
+<ul>
+<li><strong>verdict: máy chốt — được.</strong> Test tái phát fail trên base, pass sau fix; full suite xanh; lint sạch.</li>
+<li>Không cần leo lên người. Sang bước mở PR (code + video + ảnh trước/sau).</li>
+<li>Ghi vào bug DB: outcome = <strong>được</strong>, cách sửa = chặn Play khi URL nil + hiện trạng thái lỗi/mất mạng +</li>
+</ul>
+<p>  đổi <code>load(url:)</code> non-optional.</p></div>
+        </details></section>
+</div></body></html>

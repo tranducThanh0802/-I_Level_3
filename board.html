@@ -1,0 +1,71 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Agent Team (bộ khung mẫu) — Board</title>
+<style>
+ :root{--bg:#f4f6f9;--card:#fff;--ink:#1a1d21;--muted:#606a76;--line:#e6e9ee;--blue:#2f6feb;--soft:#eef2f7;--green:#17a05a;--red:#e05353}
+ @media(prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#171a20;--ink:#eceef1;--muted:#9aa3af;--line:#262a31;--blue:#6ea1ff;--soft:#20252d;--green:#3bd07f;--red:#ff6b6b}}
+ *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+ .wrap{max-width:1080px;margin:0 auto;padding:24px 16px 70px}
+ a{color:var(--blue)} .back{font-size:14px}
+ h1{font-size:22px;margin:6px 0 2px} .top{color:var(--muted);font-size:13px;margin:0 0 18px}
+ .kpis{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+ .kpi{flex:1;min-width:130px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+ .kpi .n{font-size:24px;font-weight:700} .kpi .l{font-size:12px;color:var(--muted)}
+ h2{font-size:16px;margin:26px 0 12px}
+ .board{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+ .col{flex:1;min-width:170px;background:var(--soft);border-radius:12px;padding:8px}
+ .colh{font-size:13px;font-weight:700;padding:4px 6px 8px;border-bottom:2px solid;margin-bottom:8px}
+ .kcard,.tcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px}
+ .kcard b,.tcard b{font-size:13.5px}
+ .mini{font-size:12px;color:var(--ink);margin-top:6px;display:flex;align-items:center;gap:6px}
+ .mini.muted,.muted{color:var(--muted)}
+ .bar{flex:1;height:8px;background:var(--soft);border:1px solid var(--line);border-radius:5px;overflow:hidden;min-width:60px}
+ .fill{height:100%;background:var(--green)} .pct{font-size:11px;color:var(--muted)}
+ .chip{font-size:11px;padding:2px 8px;border-radius:999px;font-weight:600}
+ .ex{font-size:10px;color:#d69200;background:#d6920022;padding:1px 6px;border-radius:5px;margin-left:5px}
+ .grid2{display:grid;grid-template-columns:1fr;gap:16px} @media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+ .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+ table{width:100%;border-collapse:collapse;font-size:13.5px} th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+ th{color:var(--muted);font-weight:600}
+ .ok{background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px}
+ .fail{background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px}
+ .qflag{display:inline-block;margin-top:8px;font-size:12px;color:var(--red);font-weight:600}
+ .empty{color:var(--muted);font-size:13px;padding:6px}
+ .tcard{margin-bottom:10px}
+</style></head><body><div class="wrap">
+ <a class="back" href="dashboard.html">← Bảng điều khiển</a> · <a class="back" href="exchanges.html">💬 Trao đổi</a>
+ <h1>📊 Agent Team (bộ khung mẫu) — Board</h1>
+ <p class="top">Trạng thái &amp; tiến độ · sinh từ dữ liệu repo · 2026-09-13 18:16. Chạy lại <code>python3 scripts/build_board.py</code> để làm mới. (Dữ liệu đang là ví dụ mẫu cho tới khi robot chạy thật.)</p>
+
+ <div class="kpis">
+   <div class="kpi"><div class="n">1</div><div class="l">Feature trong quy trình</div></div>
+   <div class="kpi"><div class="n" style="color:var(--green)">1</div><div class="l">Test XANH</div></div>
+   <div class="kpi"><div class="n" style="color:var(--red)">1</div><div class="l">Test ĐỎ</div></div>
+   <div class="kpi"><div class="n" style="color:var(--red)">0</div><div class="l">Bug đang mở</div></div>
+   <div class="kpi"><div class="n">1</div><div class="l">Câu hỏi chờ bạn</div></div>
+ </div>
+
+ <h2>🔄 Quy trình công việc (theo spec)</h2>
+ <div class="board"><div class="col"><div class="colh" style="border-color:#7a8794">Nháp</div><div class="empty">—</div></div><div class="col"><div class="colh" style="border-color:#d69200">Đang soi</div><div class="empty">—</div></div><div class="col"><div class="colh" style="border-color:#17a05a">Đã duyệt</div><div class="kcard"><b>coupon-checkout (IIP-1234)</b><span class="ex">mẫu</span>
+              <div class="mini">4 trạng thái <div class="bar"><div class="fill" style="width:100%"></div></div><span class="pct">4/4</span></div>
+              <div class="mini">nghiệm thu <div class="bar"><div class="fill" style="width:100%"></div></div><span class="pct">3/3</span></div>
+              <div class="mini muted">v2</div></div></div><div class="col"><div class="colh" style="border-color:#2f6feb">Đang code</div><div class="empty">—</div></div><div class="col"><div class="colh" style="border-color:#6366f1">Xong</div><div class="empty">—</div></div></div>
+
+ <div class="grid2" style="margin-top:22px">
+   <div class="panel">
+     <h2 style="margin-top:0">🧪 Con Tester — tiến độ</h2>
+     <table><tr><th>Kết quả</th><th>Task</th><th>Dùng?</th><th>Ghi chú</th></tr><tr><td><span class="ok">XANH</span></td><td>coupon-checkout</td>
+      <td>used</td><td class="muted"></td></tr><tr><td><span class="fail">ĐỎ</span></td><td>profile-avatar</td>
+      <td>discarded</td><td class="muted">red</td></tr></table>
+   </div>
+   <div class="panel">
+     <h2 style="margin-top:0">🐛 Bug — kiểm soát</h2>
+     <table><tr><th>Mức</th><th>Bug</th><th>Trạng thái</th><th>Lặp</th></tr><tr><td><span class="chip" style="background:#b0002022;color:#b00020">crash</span></td><td>player-nil-url-crash</td>
+      <td>fixed</td><td>lặp 3</td></tr></table>
+   </div>
+ </div>
+
+ <h2>📋 Task đang làm</h2>
+ <div class="tcard"><b>feature-coupon-checkout (IIP-1234)</b><span class="ex">mẫu</span> <span class="chip" style="background:#e0535322;color:#e05353">waiting-human</span>
+      <div class="mini">đang: <span class="chip" style="background:#7a879422;color:#7a8794">dev</span></div>
+      <div class="mini">tiến độ <div class="bar"><div class="fill" style="width:0%"></div></div><span class="pct">0/0</span></div><span class="qflag">❓ 1 câu hỏi mở</span></div>
+</div></body></html>
