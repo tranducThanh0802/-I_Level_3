@@ -228,6 +228,53 @@
   nên không sửa lại bug cũ; logs ghi việc đã chạy → không làm lại.
 - **Hệ quả:** Bỏ cập nhật STATE cuối phiên = phiên sau làm lại. Giữ STATE ngắn (<2 trang).
 
+## ADR-019 — BE là tuỳ chọn (tuỳ loại app); khung không mặc định luôn có backend
+- **Ngày:** 2026-09-13
+- **Bối cảnh:** Chủ dự án nêu: BE có thể không có, tuỳ loại app (offline/local-only).
+- **Quyết định:** Khai báo "có BE không" ở `project-knowledge.md`. Ranh giới BE (core-rules §3) **chỉ áp
+  khi có BE**. App không BE → bỏ qua phần đó; nhưng luật "không tự đổi cấu trúc dữ liệu lưu local"
+  (§1) vẫn áp; và spec field `api:` ghi "local-only".
+- **Vì sao:** Không phải app nào cũng có backend; mặc định luôn-có-BE sẽ đẻ ra luật/câu hỏi vô nghĩa
+  cho app offline.
+- **Hệ quả:** Fix bug flow "bug do BE → gửi bằng chứng" chỉ dùng khi có BE. Con Soát spec kiểm "API dùng"
+  → với app không BE thì xác nhận nguồn dữ liệu local thay vì API.
+
+## ADR-020 — Báo cáo đánh giá (§6): tính số từ log, dùng median
+- **Ngày:** 2026-09-13
+- **Quyết định:** `scripts/build_report.py` → `report.html`: thời gian theo loại việc (**median**), chờ
+  ngoài để RIÊNG, tỷ lệ dùng-ngay, top-3 loại sửa tay, % bỏ dở, bug gộp trùng, **bug quay lại**, câu hỏi.
+- **Vì sao:** §6 "không có số thì chưa đạt". Cờ cảnh báo: bỏ-dở 0% = có thể giấu; <5 mẫu = chưa kết luận.
+
+## ADR-021 — Bộ tình huống hồi quy + cổng chặn (§4 tầng ngoài)
+- **Ngày:** 2026-09-13
+- **Quyết định:** `agent-team/regression/` (scenarios.jsonl + baseline.json + results) và
+  `scripts/run_regression.py`: chạy sau khi đổi cẩm nang/chuẩn; tỷ lệ đạt **tụt dưới baseline → CHẶN (exit 1)**.
+- **Vì sao:** §4 "giữ bộ tình huống, chạy lại khi cẩm nang/chuẩn đổi, tệ đi thì chặn; sửa hỏng 1 dòng
+  cẩm nang bộ này phải bắt được". Đã test: 100%→qua, 90%→chặn.
+- **Hệ quả:** Hiện có 10 tình huống hạt giống; **cần góp đủ 20 từ việc thật** khi hệ chạy. Baseline do người duyệt.
+
+## ADR-022 — Loop ngoài: gom sửa tay → lỗi lặp ≥3 → đề xuất cẩm nang → người duyệt → hồi quy
+- **Ngày:** 2026-09-13
+- **Quyết định:** `scripts/outer_loop.py` gom `manual_fixes` từ logs, **chỉ đề xuất** khi một lỗi lặp
+  ≥3 lần (ghi `outer-loop-proposals.md`); người duyệt & sửa cẩm nang; rồi `run_regression.py` chốt cổng;
+  cập nhật baseline. Quy trình đầy đủ: `docs/outer-loop.md`.
+- **Vì sao:** §4 "tầng ngoài mới khiến tháng sau khác tháng này". Ba rào: ngưỡng ≥3 (tránh cẩm nang phình),
+  bộ hồi quy (tránh làm tệ đi), người duyệt (agent không tự sửa cẩm nang — ADR-002).
+- **Hệ quả:** Đủ 3 tầng loop (trong/giữa/ngoài) như đề bài yêu cầu.
+
+## ADR-023 — Bug board kiểu Jira tối giản; bug agent bó tay → cột "Cần người" + báo Discord
+- **Ngày:** 2026-09-13
+- **Bối cảnh:** Cần trình quản lý bug giống Jira nhưng đơn giản, mục tiêu: bug agent không fix được thì
+  người nhảy vào làm được.
+- **Quyết định:** `scripts/build_bugboard.py` → `bugboard.html` — kanban 5 cột: Mới · Đang xử lý ·
+  **🙋 Cần người** · Đã sửa · Bỏ qua. Cột "Cần người" gộp `needs-arch/be-side/cant-repro/needs-human`
+  (đúng 3 điểm dừng của Fix bug trong đề bài §1). Thêm field bug: `assignee`, `stuck_reason`.
+  Người nhận bug: sửa file → `assignee=tên`, `status=in-progress`. Bug "cần người" cũng đẩy ra Discord
+  phòng hỏi-người (🙋 BUG CẦN NGƯỜI).
+- **Vì sao:** Biến "agent DỪNG" thành "người tiếp quản" trơn tru; nguồn dữ liệu vẫn là `memory/bugs/`
+  (git = gốc), board chỉ là màn hình. Không dựng Jira thật để tránh phụ thuộc ngoài + giữ mọi thứ trong repo.
+- **Hệ quả:** Chỉnh trạng thái/nhận việc = sửa file .md (board tĩnh không ghi được). Đủ đơn giản, ai cũng làm được.
+
 ## Ghi chú — 4 refinement từ research (ĐỀ XUẤT, CHƯA áp)
 Chờ chủ dự án duyệt trước khi thành ADR chính thức. Nguồn: `docs/prior-art-research.md`.
 1. Giữ bước edit code **đơn luồng**; chỉ song song hoá soát spec / điều tra / sinh test.

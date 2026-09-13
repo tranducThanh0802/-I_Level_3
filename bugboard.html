@@ -1,0 +1,48 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Agent Team (bộ khung mẫu) — Bug board</title>
+<style>
+ :root{--bg:#f4f6f9;--card:#fff;--ink:#1a1d21;--muted:#606a76;--line:#e6e9ee;--blue:#2f6feb;--soft:#eef2f7;--red:#e05353}
+ @media(prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#171a20;--ink:#eceef1;--muted:#9aa3af;--line:#262a31;--blue:#6ea1ff;--soft:#20252d;--red:#ff6b6b}}
+ *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+ .wrap{max-width:1200px;margin:0 auto;padding:22px 16px 60px} a{color:var(--blue)} .back{font-size:14px}
+ h1{font-size:22px;margin:6px 0 2px} .top{color:var(--muted);font-size:13px;margin:0 0 14px}
+ .callout{background:#e0535315;border:1px solid var(--red);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:14px}
+ .callout b{color:var(--red)}
+ .board{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;align-items:flex-start}
+ .col{flex:1;min-width:210px;background:var(--soft);border-radius:12px;padding:10px}
+ .col-hi{box-shadow:0 0 0 2px var(--red)}
+ .colh{font-size:13px;font-weight:700;padding:2px 4px 10px;display:flex;justify-content:space-between}
+ .cnt{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:0 8px;font-size:12px;color:var(--muted)}
+ .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:9px}
+ .ck{display:flex;align-items:center;gap:6px;flex-wrap:wrap} .ck b{font-size:13px}
+ .bugid{font-size:11px;font-weight:700;color:var(--blue);background:var(--soft);border:1px solid var(--line);padding:1px 7px;border-radius:6px}
+ .sev{font-size:10px;font-weight:700;color:#fff;padding:2px 7px;border-radius:5px;text-transform:uppercase}
+ .meta{font-size:12px;color:var(--muted);margin-top:5px}
+ .stuck{font-size:12px;color:var(--red);margin-top:6px;background:#e0535315;padding:5px 7px;border-radius:6px}
+ .fn{font-size:11px;color:var(--muted);margin-top:6px} .empty{color:var(--muted);padding:6px;font-size:13px}
+</style></head><body><div class="wrap">
+ <a class="back" href="dashboard.html">← Bảng điều khiển</a> · <a class="back" href="board.html">📊 Board</a>
+ <h1>🐞 Agent Team (bộ khung mẫu) — Bug board</h1>
+ <p class="top">Jira tối giản · 3 bug · 2026-09-13 21:24. Làm mới: <code>python3 scripts/build_bugboard.py</code></p>
+ <div class="callout">🙋 <b>2 bug đang cần người</b> — agent bó tay (đổi kiến trúc / phía BE / không tái hiện được 3 lần).
+   <br>Để <b>nhận một bug</b>: mở file <code>agent-team/memory/bugs/&lt;file&gt;.md</code>, đổi <code>assignee:</code> thành tên bạn và <code>status: in-progress</code>.</div>
+ <div class="board"><div class="col"><div class="colh">🆕 Mới <span class="cnt">0</span></div><div class=empty>—</div></div><div class="col"><div class="colh">🔧 Đang xử lý <span class="cnt">0</span></div><div class=empty>—</div></div><div class="col col-hi"><div class="colh">🙋 Cần người <span class="cnt">2</span></div><div class="card" style="border-left:4px solid #d69200">
+      <div class="ck"><span class="bugid">BUG-3</span><span class="sev" style="background:#d69200">medium</span>
+        <b>profile-avatar-404</b></div>
+      <div class="meta">lặp 2 · nguồn tester</div>
+      <div class="meta">👤 chưa ai nhận</div>
+      <div class="stuck">⚠️ &quot;Ảnh đại diện trả 404 từ BE với một số user cũ. Client xử lý đúng (hiện ảnh mặc định); lỗi nằm ở dữ liệu BE → đóng gói bằng chứng gửi BE, agent không tự sửa.&quot;</div>
+      <div class="fn">bug-EXAMPLE-3-be-side.md</div></div><div class="card" style="border-left:4px solid #e05353">
+      <div class="ck"><span class="bugid">BUG-2</span><span class="sev" style="background:#e05353">high</span>
+        <b>feed-scroll-race</b></div>
+      <div class="meta">lặp 4 · nguồn store</div>
+      <div class="meta">👤 chưa ai nhận</div>
+      <div class="stuck">⚠️ &quot;Race condition khi cuộn nhanh: 2 lần appendPage chạy song song. Sửa tại chỗ không hết; cần đổi sang actor/serial queue cho FeedViewModel — đụng kiến trúc, agent DỪNG hỏi.&quot;</div>
+      <div class="fn">bug-EXAMPLE-2-needs-human.md</div></div></div><div class="col"><div class="colh">✅ Đã sửa <span class="cnt">1</span></div><div class="card" style="border-left:4px solid #b00020">
+      <div class="ck"><span class="bugid">BUG-1</span><span class="sev" style="background:#b00020">crash</span>
+        <b>player-nil-url-crash</b></div>
+      <div class="meta">lặp 3 · nguồn store</div>
+      <div class="meta">👤 chưa ai nhận</div>
+      
+      <div class="fn">bug-EXAMPLE.md</div></div></div><div class="col"><div class="colh">🗄️ Bỏ qua <span class="cnt">0</span></div><div class=empty>—</div></div></div>
+</div></body></html>

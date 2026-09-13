@@ -24,8 +24,12 @@ Danh sách này áp cho **mọi** agent. Chạm vào bất kỳ mục nào thì 
 - Agent **không merge**, **không đẩy lên store**. Kể cả khi mọi thứ đã chạy êm nhiều tháng.
 - Người duyệt và merge. Người bấm phát hành.
 
-## 3. Ranh giới BE
+## 3. Ranh giới BE (chỉ áp khi project CÓ backend)
 
+> App có BE hay không là **tuỳ loại app** — khai báo ở `project-knowledge.md`. App offline/local-only
+> thì bỏ qua mục này; nhưng luật "không tự đổi cấu trúc dữ liệu lưu local" ở §1 **vẫn áp**.
+
+Nếu project CÓ BE:
 - BE là **bản chính (source of truth)**. Agent đọc, không sửa.
 - Nếu BE team khác: phát hiện khi docs BE đổi → báo lên, không tự sửa gì phía BE.
 - Nếu BE cùng team: **cấm** đổi API contract để cho test xanh. Bản app cũ trên máy người dùng vẫn phải chạy được với API hiện tại.

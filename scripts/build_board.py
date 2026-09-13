@@ -97,7 +97,7 @@ for f in files("workspace"):
 bugs = []
 for f in files("memory/bugs"):
     fm = fm_of(read(f))
-    bugs.append({"key": fm.get("key", os.path.basename(f)), "sev": fm.get("severity", ""),
+    bugs.append({"id": fm.get("id", ""), "key": fm.get("key", os.path.basename(f)), "sev": fm.get("severity", ""),
                  "status": fm.get("status", ""), "count": fm.get("count", "?")})
 
 # ---- runs.jsonl (tester) ----
@@ -169,7 +169,8 @@ if not tcards:
 brows = ""
 for b in bugs:
     c = SEVC.get(b["sev"].lower(), "#7a8794")
-    brows += f"""<tr><td>{chip(b['sev'] or '?', c)}</td><td>{html.escape(b['key'])}</td>
+    idp = f"<b>{html.escape(b['id'])}</b> · " if b.get("id") else ""
+    brows += f"""<tr><td>{chip(b['sev'] or '?', c)}</td><td>{idp}{html.escape(b['key'])}</td>
       <td>{html.escape(b['status'])}</td><td>lặp {html.escape(str(b['count']))}</td></tr>"""
 if not brows:
     brows = '<tr><td colspan="4" class="muted">Chưa có bug.</td></tr>'

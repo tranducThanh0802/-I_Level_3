@@ -27,7 +27,7 @@ status: draft | reviewing | approved | building | done
 version: 1
 approved_by: <tên PO người, hoặc null nếu chưa duyệt>
 updated: <YYYY-MM-DD>
-api: <endpoint/contract dùng; "BE: <link docs>">
+api: <endpoint/contract nếu CÓ BE; hoặc "local-only" nếu app không backend>
 out_of_scope: <cái gì lần này KHÔNG làm>
 ---
 

@@ -21,17 +21,27 @@
 
 ```yaml
 ---
+id: BUG-<n>                    # số thứ tự Jira-style, duy nhất & ổn định. Lấy số tiếp theo: scripts/new_bug.py
 key: <slug ngắn, ổn định, dùng trong tên file>
 fingerprint: <chuỗi nhận trùng: ví dụ "crash:NSInvalidArgument:PlayerViewModel.play:L142">
 count: <số lần gặp>            # cộng mỗi lần gặp lại
 severity: crash | high | medium | low
 source: store | tester | user | ci
-status: open | fixed | wontfix | be-side | needs-arch
+status: open | in-progress | needs-human | needs-arch | be-side | cant-repro | fixed | wontfix
+assignee: <ai đang cầm; rỗng = chưa ai nhận>
+stuck_reason: <nếu agent bó tay: vì sao — dùng cho cột "Cần người" ở bug board>
 first_seen: <YYYY-MM-DD>
 last_seen: <YYYY-MM-DD>
 touched_files:                 # chỗ từng phải sửa (kể cả sửa tay)
   - <path>
 ---
+
+# Nhóm trạng thái "Cần người" (agent DỪNG, người nhảy vào — đề bài §1 luồng bugfix):
+#   needs-arch  = phải đổi kiến trúc mới hết
+#   be-side     = lỗi phía BE (đóng gói bằng chứng gửi sang)
+#   cant-repro  = thử 3 lần vẫn không tái hiện được
+#   needs-human = lý do khác agent không tự quyết
+# Người nhận: đổi assignee=tên mình, status=in-progress.
 
 ## Dấu hiệu
 <log / stack trace rút gọn>

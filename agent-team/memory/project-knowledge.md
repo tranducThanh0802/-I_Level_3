@@ -46,10 +46,15 @@ Spec thiếu ≥3 trong 4 → Soát spec trả lại. UI thiếu → Test đánh
 - TODO: build đỏ / CI ở đâu, cách agent đọc được trạng thái.
 - TODO: kênh bug tester / user report (Jira/Asana/Linear? MCP nào?).
 
-## Docs BE
+## Backend (BE) — TUỲ LOẠI APP, có thể KHÔNG có
 
-- TODO: BE cùng team hay team khác? (quyết định cách xử lý — xem core-rules §3).
-- TODO: docs BE (bản chính) nằm ở đâu, cách agent phát hiện khi nó đổi.
+- **Project này có BE không?** ☐ Có · ☐ Không (app offline/local-only)
+- Nếu KHÔNG: bỏ qua phần BE ở core-rules §3; chỉ giữ luật "không tự đổi cấu trúc dữ liệu lưu local".
+  Nguồn dữ liệu local là gì (CoreData / SwiftData / UserDefaults / file)? → TODO điền.
+- Nếu CÓ:
+  - TODO: BE cùng team hay team khác? (xem core-rules §3).
+  - TODO: docs BE (bản chính) nằm ở đâu, cách agent phát hiện khi nó đổi.
+  - TODO: base URL / môi trường (dev/staging/prod), cách xác thực.
 
 ## Quyết định cũ theo vùng code
 

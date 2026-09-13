@@ -1,0 +1,6 @@
+{
+  "pass_rate": 1.0,
+  "date": "2026-09-13",
+  "approved_by": "PO (người)",
+  "note": "Mốc baseline mẫu trên 10 tình huống hạt giống. Khi góp đủ 20 tình huống thật, chạy 1 lần với agent, người duyệt rồi cập nhật lại pass_rate ở đây."
+}

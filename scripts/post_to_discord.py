@@ -194,11 +194,23 @@ def main():
         k = key("bug", base, status, fm.get("count", ""))
         if k in seen:
             continue
+        bid = fm.get("id", "")
+        tag = f"{bid} · " if bid else ""
         post(wa, "🐛 Fix bug",
-             f"**Bug [{fm.get('key', base)}]** · mức **{sev}** · lặp {fm.get('count','?')} · {status}\n"
+             f"**{tag}{fm.get('key', base)}** · mức **{sev}** · lặp {fm.get('count','?')} · {status}\n"
              f"`{fm.get('fingerprint','')}`\n`bugs/{base}`",
              SEV.get(sev.lower(), 0x7A8794))
         seen.add(k); sent += 1; time.sleep(0.4)
+        # bug agent bó tay -> báo phòng hỏi-người để người nhảy vào
+        if status in ("needs-human", "needs-arch", "be-side", "cant-repro"):
+            kh = key("bug-human", base, status)
+            if kh not in seen:
+                post(wu, "🐛 Fix bug",
+                     f"🙋 **BUG CẦN NGƯỜI** · {tag}`{fm.get('key', base)}` (mức {sev})\n"
+                     f"{fm.get('stuck_reason','(xem file)')}\n"
+                     f"Nhận: sửa `bugs/{base}` → assignee=tên bạn, status=in-progress.",
+                     0xE05353)
+                seen.add(kh); sent += 1; time.sleep(0.4)
 
     # 4) specs -> phòng agents, màu theo trạng thái (kiểm soát spec)
     ST = {"draft": 0x7A8794, "reviewing": 0xD69200, "approved": 0x17A05A,

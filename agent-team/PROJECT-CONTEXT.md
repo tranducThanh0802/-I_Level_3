@@ -98,7 +98,10 @@ Bốn bậc trưởng thành: 1 (một bước, gọi tay) → 2 (một luồng 
 - [x] Bộ context dự án (file này, `CLAUDE.md`, `DECISIONS.md`, `docs/original-spec.md`, `project-knowledge.md`).
 - [x] Nghiên cứu prior art — `docs/prior-art-research.md`.
 - [x] Hướng dẫn dựng con Fix bug cho iOS (how-to + kế hoạch tuần 1) — `docs/build-bugfix-agent-guide.md`.
-- [x] Dashboard web local — `dashboard.html`.
+- [x] Dashboard web local — `dashboard.html` + Board + Exchanges + Discord.
+- [x] Loop 3 tầng ĐỦ: trong/giữa (build-bugfix-guide) + **ngoài** (`outer_loop.py` + `docs/outer-loop.md`).
+- [x] Báo cáo đánh giá §6 — `build_report.py` → report.html (median, chờ ngoài riêng).
+- [x] Bộ tình huống hồi quy + cổng chặn — `regression/` + `run_regression.py` (đã test qua/chặn).
 - [ ] **CHẶN:** lấp `project-knowledge.md` (cần đường dẫn repo iOS thật: lệnh build/test, nguồn crash, BE).
 - [ ] Bước 1 — con Fix bug làm một bước, gọi tay (bậc 1) — theo kế hoạch tuần 1 trong guide.
 - [ ] Phép thử bộ nhớ — báo lại bug mẫu, kiểm agent có tra ra cách sửa cũ.

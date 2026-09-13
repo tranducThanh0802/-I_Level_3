@@ -1,0 +1,54 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Agent Team (bộ khung mẫu) — Báo cáo đánh giá</title>
+<style>
+ :root{--bg:#f4f6f9;--card:#fff;--ink:#1a1d21;--muted:#606a76;--line:#e6e9ee;--blue:#2f6feb;--soft:#eef2f7;--green:#17a05a;--red:#e05353;--amber:#d69200}
+ @media(prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#171a20;--ink:#eceef1;--muted:#9aa3af;--line:#262a31;--blue:#6ea1ff;--soft:#20252d;--green:#3bd07f;--red:#ff6b6b;--amber:#f0b52a}}
+ *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+ .wrap{max-width:860px;margin:0 auto;padding:24px 16px 70px} a{color:var(--blue)} .back{font-size:14px}
+ h1{font-size:22px;margin:6px 0 2px} .top{color:var(--muted);font-size:13px;margin:0 0 16px}
+ h2{font-size:16px;margin:24px 0 10px}
+ .kpis{display:flex;gap:10px;flex-wrap:wrap} .kpi{flex:1;min-width:130px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+ .kpi .n{font-size:24px;font-weight:700} .kpi .l{font-size:12px;color:var(--muted)}
+ table{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+ th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line)} th{color:var(--muted);font-weight:600;background:var(--soft)}
+ .muted{color:var(--muted)} .warn{color:var(--amber);font-size:12px}
+ .flag{background:#e0535322;border:1px solid var(--red);color:var(--red);border-radius:10px;padding:8px 12px;margin:6px 0;font-size:13.5px}
+ ul{margin:6px 0;padding-left:20px} .note{color:var(--muted);font-size:12.5px;margin-top:6px}
+</style></head><body><div class="wrap">
+ <a class="back" href="dashboard.html">← Bảng điều khiển</a> · <a class="back" href="board.html">📊 Board</a>
+ <h1>📈 Agent Team (bộ khung mẫu) — Báo cáo đánh giá</h1>
+ <p class="top">Theo §6 đề bài · median (không mean) · chờ ngoài để riêng · 2026-09-13 21:22. Làm mới: <code>python3 scripts/build_report.py</code></p>
+ <div class="flag">⚠️ Chỉ 3 lần chạy — chưa đủ mẫu để kết luận (§6 cần ≥5/loại). Số dưới đây là minh hoạ.</div>
+
+ <div class="kpis">
+   <div class="kpi"><div class="n">3</div><div class="l">Lần chạy (có log)</div></div>
+   <div class="kpi"><div class="n" style="color:var(--green)">67%</div><div class="l">Dùng ngay (không sửa)</div></div>
+   <div class="kpi"><div class="n" style="color:var(--red)">33%</div><div class="l">Bỏ giữa chừng</div></div>
+   <div class="kpi"><div class="n" style="color:var(--red)">0%</div><div class="l">Bug quay lại</div></div>
+ </div>
+
+ <h2>⏱️ Thời gian theo loại việc (median)</h2>
+ <table><tr><th>Luồng</th><th>Thời gian làm</th><th>Chờ ngoài (riêng)</th><th>Số mẫu</th></tr><tr><td>bugfix</td><td>26.0 phút</td><td class='muted'>0.0 phút</td><td>1 <span class="warn">(chỉ 1 mẫu — §6 cần ≥5 để so sánh)</span></td></tr><tr><td>feature</td><td>20.2 phút</td><td class='muted'>0.0 phút</td><td>2 <span class="warn">(chỉ 2 mẫu — §6 cần ≥5 để so sánh)</span></td></tr></table>
+ <p class="note">Chờ ngoài (chờ PO/BE) để RIÊNG — agent không cắt được phần này (§6).</p>
+
+ <h2>✋ Sửa tay (đầu vào loop ngoài)</h2>
+ <p>Tổng lần sửa tay: <b>1</b>. Ba loại hay gặp nhất:</p>
+ <ul><li>sai chuẩn — 1 lần</li></ul>
+
+ <h2>🧪 Test &amp; 🐛 Bug</h2>
+ <table>
+  <tr><th>Chỉ số</th><th>Giá trị</th></tr>
+  <tr><td>Test XANH / ĐỎ</td><td>1 / 1</td></tr>
+  <tr><td>Bug gộp trùng (đỡ mở bản ghi mới)</td><td>6</td></tr>
+  <tr><td>Bug quay lại sau khi sửa</td><td>0 (0%) — cao là đang chữa triệu chứng</td></tr>
+  <tr><td>Câu hỏi: đang mở / đã trả lời</td><td>1 / 1</td></tr>
+ </table>
+ <p class="note">"Câu hỏi/tuần" cần mốc thời gian để chia tuần — sẽ tính khi có nhiều dữ liệu thật.</p>
+
+ <h2>Nhắc quy tắc §6</h2>
+ <ul>
+  <li>So sánh: cùng loại việc, độ khó tương đương, <b>≥5 mẫu mỗi bên</b>, dùng <b>median</b>.</li>
+  <li>Không tính: việc không log · tỷ lệ thành công tròn 100% (giấu việc bỏ) · "thấy nhanh hơn" không kèm số.</li>
+  <li>Đạt: bậc ≥2 · giảm ≥40% thời gian việc lặp · bỏ dở &lt;20% · bug quay lại &lt;10%.</li>
+ </ul>
+</div></body></html>

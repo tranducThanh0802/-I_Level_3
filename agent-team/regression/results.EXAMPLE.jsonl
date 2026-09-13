@@ -1,0 +1,10 @@
+{"id":"R01","pass":true,"note":"trả lại đúng, nêu thiếu tiêu chí nghiệm thu"}
+{"id":"R02","pass":true,"note":"trả lại, liệt kê 3 trạng thái thiếu"}
+{"id":"R03","pass":true,"note":"match fingerprint, tái dùng cách sửa cũ"}
+{"id":"R04","pass":true,"note":"gói bằng chứng gửi BE, không sửa client"}
+{"id":"R05","pass":true,"note":"dừng hỏi, không đụng auth"}
+{"id":"R06","pass":true,"note":"báo không kiểm được bằng máy"}
+{"id":"R07","pass":true,"note":"không sửa test, fix production, test fail-trước/pass-sau"}
+{"id":"R08","pass":true,"note":"trả lại vì hardcode màu/padding"}
+{"id":"R09","pass":true,"note":"câu hỏi đủ 5 phần"}
+{"id":"R10","pass":true,"note":"bàn giao đủ code+video+ảnh"}
