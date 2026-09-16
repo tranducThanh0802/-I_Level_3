@@ -5,3 +5,6 @@ scripts/.discord_state.json
 # Rác hệ thống
 .DS_Store
 **/.DS_Store
+
+# Feed live ephemeral (theo dõi lúc chạy, không phải hồ sơ)
+agent-team/live/activity.jsonl

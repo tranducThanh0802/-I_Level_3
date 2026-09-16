@@ -335,6 +335,15 @@
   - Bộ hồi quy nâng **10 → 20 tình huống** (đủ theo đề bài §4); run_regression 20/20.
   - Spec đổi giữa chừng: specs đã có luật tăng version + changelog (đổi lớn → quay lại reviewing) + tình huống R16.
 
+## ADR-032 — Theo dõi agent chạy trực tiếp (live activity feed)
+- **Ngày:** 2026-09-16
+- **Bối cảnh:** Trước khi cho agent chạy thật, cần xem được nó đang làm gì realtime (không chỉ ảnh chụp).
+- **Quyết định:** 3 tầng theo dõi: **Live** (`emit_activity.py` phát sự kiện từng bước → `live/activity.jsonl`;
+  xem bằng `watch_live.py` trong terminal hoặc Discord nếu `--discord`), **Ảnh chụp** (dashboard/board/report),
+  **Hồi cứu** (runs.jsonl + report). `activity.jsonl` ephemeral (.gitignore); hồ sơ chính thức vẫn là runs.jsonl.
+- **Vì sao:** Quan sát lúc chạy là điều kiện để tin tưởng + can thiệp sớm khi agent đi sai. Đã test: feed
+  màu trong terminal + đẩy Discord realtime.
+
 ## Ghi chú — 4 refinement từ research (ĐỀ XUẤT, CHƯA áp)
 Chờ chủ dự án duyệt trước khi thành ADR chính thức. Nguồn: `docs/prior-art-research.md`.
 1. Giữ bước edit code **đơn luồng**; chỉ song song hoá soát spec / điều tra / sinh test.
