@@ -16,6 +16,10 @@ Mỗi lần chạy = một dòng JSON append vào `runs.jsonl` (một dòng mộ
   "started_at": "2026-09-13T10:42:05+07:00",
   "ended_at":   "2026-09-13T11:07:31+07:00",
   "wait_external_ms": 0,           // thời gian CHỜ người/PO/BE — đo nhưng để RIÊNG
+  "size": "S | M | L",             // ĐỘ KHÓ/quy mô — để so "độ khó tương đương" (§6). BẮT BUỘC.
+  "human_baseline_min": 120,       // ước lượng NẾU LÀM TAY mất bao lâu (phút) — để tính % tiết kiệm.
+                                   //   Cách lấy: người ước lượng trước khi giao, hoặc đo nhóm đối chứng.
+                                   //   Thiếu -> không tính được "giảm ≥40%" cho việc này.
   "steps": [                       // qua bước nào
     {"step": "tra-bug-cu", "check": "-", "result": "hit:player-nil-url-crash"},
     {"step": "tim-nguyen-nhan", "check": "-", "result": "ok"},
@@ -36,7 +40,9 @@ Mỗi lần chạy = một dòng JSON append vào `runs.jsonl` (một dòng mộ
 
 - **Không có log thì không được tính vào phần "đã cắt".**
 - `wait_external_ms` **để riêng**, không gộp vào thời gian làm.
-- So sánh: cùng loại việc, độ khó tương đương, ≥5 mẫu mỗi bên.
+- So sánh: cùng loại việc, **độ khó tương đương** (dùng `size`), ≥5 mẫu mỗi bên.
+- **Tiết kiệm thời gian** = (`human_baseline_min` − thời-gian-làm-agent) / `human_baseline_min`. Dùng median.
+  Mục tiêu §6: giảm ≥40% ở nhóm việc lặp lại. Không có baseline → việc đó không vào phép tính này.
 - Dùng **trung vị (median)**, không dùng trung bình — một việc dài bất thường kéo lệch cả bảng.
 - Tỷ lệ thành công tròn 100% = đang giấu việc bỏ dở. Việc bỏ giữa chừng phải có (`outcome: discarded`).
 

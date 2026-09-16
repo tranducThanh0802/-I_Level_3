@@ -16,8 +16,8 @@ việc bỏ giữa chừng <20%, bug quay lại <10%, số liệu tra được t
 **Người:** PO (quyết chức năng, chốt spec, chịu trách nhiệm). Duyệt & merge & phát hành.
 **Nguồn đọc:** BE — chỉ đọc, không sửa (đề bài §5).
 **Agent:**
-- **PO-agent** (trợ lý PO người) — soạn nháp spec *(ADR-010)*; kiêm giám sát: hiểu-spec, cửa hỏi
-  (chỉ trả lời từ spec, không có thì leo lên người), canh hướng đi (nêu cờ + bằng chứng). *(ADR-011)*
+- **PO-agent** (trợ lý PO người) — **ý tưởng→research→spec draft** *(ADR-024)*; soạn nháp spec *(ADR-010)*;
+  kiêm giám sát: hiểu-spec, cửa hỏi (chỉ trả lời từ spec), canh hướng đi (nêu cờ + bằng chứng). *(ADR-011)*
 - **Soát spec** — soi lại spec độc lập + đối chiếu docs BE, chuẩn bị câu hỏi cho PO.
 - **UI/UX** — phác thảo/dịch design trong **Penpot tự host** (không limit); người duyệt visual, máy
   kiểm bằng snapshot testing. *(ADR-012)*
@@ -102,6 +102,7 @@ Bốn bậc trưởng thành: 1 (một bước, gọi tay) → 2 (một luồng 
 - [x] Loop 3 tầng ĐỦ: trong/giữa (build-bugfix-guide) + **ngoài** (`outer_loop.py` + `docs/outer-loop.md`).
 - [x] Báo cáo đánh giá §6 — `build_report.py` → report.html (median, chờ ngoài riêng).
 - [x] Bộ tình huống hồi quy + cổng chặn — `regression/` + `run_regression.py` (đã test qua/chặn).
+- [x] Lấp 4 lỗ hổng đỏ: baseline+size (§6 tính tiết kiệm), vòng review PR, cổng quét secret/PII, PO-agent ý-tưởng→spec.
 - [ ] **CHẶN:** lấp `project-knowledge.md` (cần đường dẫn repo iOS thật: lệnh build/test, nguồn crash, BE).
 - [ ] Bước 1 — con Fix bug làm một bước, gọi tay (bậc 1) — theo kế hoạch tuần 1 trong guide.
 - [ ] Phép thử bộ nhớ — báo lại bug mẫu, kiểm agent có tra ra cách sửa cũ.

@@ -65,6 +65,21 @@ dropped = sum(1 for r in runs if r.get("outcome") == "discarded")
 use_rate = round(used / total * 100) if total else 0
 drop_rate = round(dropped / total * 100) if total else 0
 
+
+def saving_pct(r):
+    b = r.get("human_baseline_min")
+    d = dur_min(r)
+    if b and d is not None and b > 0:
+        return round((b - d) / b * 100)
+    return None
+
+
+sav_all = med([saving_pct(r) for r in runs])
+sav_by_flow = {}
+for r in runs:
+    sav_by_flow.setdefault(r.get("flow", "?"), []).append(saving_pct(r))
+n_baseline = sum(1 for r in runs if r.get("human_baseline_min"))
+
 # thời gian theo loại việc (flow) — median, tách chờ ngoài
 by_flow = {}
 for r in runs:
@@ -75,7 +90,9 @@ for flow, rs in sorted(by_flow.items()):
     w = med([wait_min(r) for r in rs])
     n = len(rs)
     warn = "" if n >= 5 else f' <span class="warn">(chỉ {n} mẫu — §6 cần ≥5 để so sánh)</span>'
-    flow_rows += f"<tr><td>{html.escape(flow)}</td><td>{d if d is not None else '—'} phút</td><td class='muted'>{w if w is not None else '—'} phút</td><td>{n}{warn}</td></tr>"
+    sflow = med(sav_by_flow.get(flow, []))
+    sv = f"{sflow}%" if sflow is not None else "—"
+    flow_rows += f"<tr><td>{html.escape(flow)}</td><td>{d if d is not None else '—'} phút</td><td class='muted'>{w if w is not None else '—'} phút</td><td><b>{sv}</b></td><td>{n}{warn}</td></tr>"
 
 # sửa tay: tổng + top 3 loại
 fix_types = []
@@ -133,6 +150,10 @@ for f in glob.glob(os.path.join(AT, "workspace", "*.md")):
 now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 # cảnh báo §6
 flags = []
+n_demo = sum(1 for r in runs if r.get("demo") is True)
+if n_demo:
+    flags.append(f"DỮ LIỆU DEMO ({n_demo}/{total} dòng) — CHỈ để xem báo cáo, KHÔNG phải số thật. "
+                 "Xoá: python3 scripts/seed_demo_data.py --clear")
 if total and drop_rate == 0:
     flags.append("Tỷ lệ bỏ dở = 0% — §6: có thể đang GIẤU việc bỏ dở. Kiểm lại đã log đủ chưa.")
 if total < 5:
@@ -165,12 +186,15 @@ page = f"""<!doctype html><html lang="vi"><head><meta charset="utf-8">
    <div class="kpi"><div class="n">{total}</div><div class="l">Lần chạy (có log)</div></div>
    <div class="kpi"><div class="n" style="color:var(--green)">{use_rate}%</div><div class="l">Dùng ngay (không sửa)</div></div>
    <div class="kpi"><div class="n" style="color:var(--red)">{drop_rate}%</div><div class="l">Bỏ giữa chừng</div></div>
+   <div class="kpi"><div class="n" style="color:{'var(--green)' if (sav_all or 0) >= 40 else 'var(--amber)'}">{str(sav_all)+'%' if sav_all is not None else '—'}</div><div class="l">Tiết kiệm vs làm tay (mục tiêu ≥40%)</div></div>
    <div class="kpi"><div class="n" style="color:var(--red)">{bug_recur_rate}%</div><div class="l">Bug quay lại</div></div>
  </div>
 
  <h2>⏱️ Thời gian theo loại việc (median)</h2>
- <table><tr><th>Luồng</th><th>Thời gian làm</th><th>Chờ ngoài (riêng)</th><th>Số mẫu</th></tr>{flow_rows or '<tr><td colspan=4 class=muted>chưa có dữ liệu</td></tr>'}</table>
- <p class="note">Chờ ngoài (chờ PO/BE) để RIÊNG — agent không cắt được phần này (§6).</p>
+ <table><tr><th>Luồng</th><th>Thời gian làm</th><th>Chờ ngoài (riêng)</th><th>Tiết kiệm vs làm tay</th><th>Số mẫu</th></tr>{flow_rows or '<tr><td colspan=5 class=muted>chưa có dữ liệu</td></tr>'}</table>
+ <p class="note">Chờ ngoài (chờ PO/BE) để RIÊNG — agent không cắt được phần này (§6).
+   <b>Tiết kiệm</b> = (baseline làm-tay − thời gian agent)/baseline; median; chỉ tính việc có `human_baseline_min`
+   ({n_baseline}/{total} việc có baseline). Mục tiêu §6: ≥40%.</p>
 
  <h2>✋ Sửa tay (đầu vào loop ngoài)</h2>
  <p>Tổng lần sửa tay: <b>{len(fix_types)}</b>. Ba loại hay gặp nhất:</p>

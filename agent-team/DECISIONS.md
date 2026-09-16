@@ -275,6 +275,39 @@
   (git = gốc), board chỉ là màn hình. Không dựng Jira thật để tránh phụ thuộc ngoài + giữ mọi thứ trong repo.
 - **Hệ quả:** Chỉnh trạng thái/nhận việc = sửa file .md (board tĩnh không ghi được). Đủ đơn giản, ai cũng làm được.
 
+## ADR-024 — PO-agent: pipeline ý tưởng → research → spec draft (người chốt)
+- **Ngày:** 2026-09-14
+- **Bối cảnh:** Cần đưa một ý tưởng thô để PO-agent research và biến thành spec/tài liệu.
+- **Quyết định:** Mở rộng PO-agent: ý tưởng (1–2 câu) → (1) làm rõ/hỏi → (2) research có nguồn →
+  (3) sinh `specs/<feature>.md` status **draft** (đủ tiêu chí nghiệm thu + 4 trạng thái + mục Căn cứ/Research
+  + câu hỏi mở) → (4) Soát spec soi → **PO người chốt approved**. Cẩm nang: `memory/playbooks/idea-to-spec.md`.
+- **Rào:** agent ĐỀ XUẤT không QUYẾT (không tự đặt approved, không tự quyết phạm vi sản phẩm); mọi claim
+  research có NGUỒN, không bịa (tránh spec mơ hồ — nhóm nguy hiểm nhất). Dùng WebSearch/skill deep-research.
+- **Hệ quả:** Lấp lỗ hổng "ý tưởng → tài liệu". Không phá đề bài vì PO người vẫn giữ quyết định & chốt spec.
+
+## ADR-025 — Log thêm `size` + `human_baseline_min` để tính "tiết kiệm ≥40%" (§6)
+- **Ngày:** 2026-09-14
+- **Bối cảnh:** Lỗ hổng #1+#2: không có baseline người-làm-tay → không tính được "giảm ≥40%"; và không
+  có độ khó → so sánh không công bằng (§6 "độ khó tương đương").
+- **Quyết định:** `runs.jsonl` thêm `size` (S/M/L, bắt buộc) và `human_baseline_min` (ước lượng làm tay).
+  Báo cáo web + Excel tính **Tiết kiệm = (baseline − thời-gian-agent)/baseline**, median, theo loại; KPI
+  xanh khi ≥40%. Việc thiếu baseline không vào phép tính.
+- **Vì sao:** Không có 2 trường này thì dù chạy e2e xong vẫn không trả lời được câu hỏi chính của §6.
+
+## ADR-026 — Vòng phản hồi review PR (người chê → agent sửa → người merge)
+- **Ngày:** 2026-09-14
+- **Bối cảnh:** Lỗ hổng #3: agent mở PR nháp rồi DỪNG; chưa có vòng người-trong-lặp.
+- **Quyết định:** `pr_status` (draft→changes-requested→approved→merged) + `review_round` ở workspace;
+  người ghi feedback checklist ("## Phản hồi review PR"), agent sửa từng ý + máy kiểm xanh + đánh dấu.
+  Chốt chặn ≤3 vòng, 2 vòng giống nhau thì dừng. Agent KHÔNG merge. Cẩm nang: `playbooks/pr-review-loop.md`.
+
+## ADR-027 — Cổng quét SECRET + PII trước commit / gửi Discord
+- **Ngày:** 2026-09-14
+- **Bối cảnh:** Lỗ hổng #4: agent sửa code thật có thể lộ khóa; crash log có thể chứa PII → rò ra Discord.
+- **Quyết định:** `scripts/scan_secrets.py` — SECRET (private key/AWS/Google/webhook/JWT/khóa-gán-biến/file .p12…)
+  → CHẶN (exit 1); PII (email/SĐT) → cảnh báo. Cài pre-commit hook: `--install-hook`. Discord poster tự
+  **redact** email/secret trước khi gửi. Đã test: repo sạch qua, secret giả bị chặn.
+
 ## Ghi chú — 4 refinement từ research (ĐỀ XUẤT, CHƯA áp)
 Chờ chủ dự án duyệt trước khi thành ADR chính thức. Nguồn: `docs/prior-art-research.md`.
 1. Giữ bước edit code **đơn luồng**; chỉ song song hoá soát spec / điều tra / sinh test.

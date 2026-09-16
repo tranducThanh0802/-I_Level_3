@@ -77,7 +77,18 @@ def section(text, title_contains):
     return out
 
 
+_RX_EMAIL = re.compile(r"\b([A-Za-z0-9._%+\-])[A-Za-z0-9._%+\-]*@([A-Za-z0-9.\-]+)\b")
+_RX_SECRET = re.compile(r"(https://\S*discord\S*/api/webhooks/\S+)|(\bAKIA[0-9A-Z]{16}\b)|(\bAIza[0-9A-Za-z\-_]{35}\b)|(eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{5,})")
+
+
+def redact(s):
+    s = _RX_SECRET.sub("[ẨN-SECRET]", s or "")
+    s = _RX_EMAIL.sub(r"\1***@\2", s)  # che phần đầu email trước khi gửi ra ngoài
+    return s
+
+
 def post(url, username, content, color=None):
+    content = redact(content)
     payload = {"username": username[:80]}
     if color is not None:
         payload["embeds"] = [{"description": content[:4000], "color": color}]

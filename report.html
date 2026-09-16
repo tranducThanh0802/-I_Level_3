@@ -17,28 +17,31 @@
 </style></head><body><div class="wrap">
  <a class="back" href="dashboard.html">← Bảng điều khiển</a> · <a class="back" href="board.html">📊 Board</a>
  <h1>📈 Agent Team (bộ khung mẫu) — Báo cáo đánh giá</h1>
- <p class="top">Theo §6 đề bài · median (không mean) · chờ ngoài để riêng · 2026-09-13 21:22. Làm mới: <code>python3 scripts/build_report.py</code></p>
- <div class="flag">⚠️ Chỉ 3 lần chạy — chưa đủ mẫu để kết luận (§6 cần ≥5/loại). Số dưới đây là minh hoạ.</div>
+ <p class="top">Theo §6 đề bài · median (không mean) · chờ ngoài để riêng · 2026-09-16 21:38. Làm mới: <code>python3 scripts/build_report.py</code></p>
+ <div class="flag">⚠️ DỮ LIỆU DEMO (14/17 dòng) — CHỈ để xem báo cáo, KHÔNG phải số thật. Xoá: python3 scripts/seed_demo_data.py --clear</div>
 
  <div class="kpis">
-   <div class="kpi"><div class="n">3</div><div class="l">Lần chạy (có log)</div></div>
-   <div class="kpi"><div class="n" style="color:var(--green)">67%</div><div class="l">Dùng ngay (không sửa)</div></div>
-   <div class="kpi"><div class="n" style="color:var(--red)">33%</div><div class="l">Bỏ giữa chừng</div></div>
+   <div class="kpi"><div class="n">17</div><div class="l">Lần chạy (có log)</div></div>
+   <div class="kpi"><div class="n" style="color:var(--green)">82%</div><div class="l">Dùng ngay (không sửa)</div></div>
+   <div class="kpi"><div class="n" style="color:var(--red)">18%</div><div class="l">Bỏ giữa chừng</div></div>
+   <div class="kpi"><div class="n" style="color:var(--green)">57.0%</div><div class="l">Tiết kiệm vs làm tay (mục tiêu ≥40%)</div></div>
    <div class="kpi"><div class="n" style="color:var(--red)">0%</div><div class="l">Bug quay lại</div></div>
  </div>
 
  <h2>⏱️ Thời gian theo loại việc (median)</h2>
- <table><tr><th>Luồng</th><th>Thời gian làm</th><th>Chờ ngoài (riêng)</th><th>Số mẫu</th></tr><tr><td>bugfix</td><td>26.0 phút</td><td class='muted'>0.0 phút</td><td>1 <span class="warn">(chỉ 1 mẫu — §6 cần ≥5 để so sánh)</span></td></tr><tr><td>feature</td><td>20.2 phút</td><td class='muted'>0.0 phút</td><td>2 <span class="warn">(chỉ 2 mẫu — §6 cần ≥5 để so sánh)</span></td></tr></table>
- <p class="note">Chờ ngoài (chờ PO/BE) để RIÊNG — agent không cắt được phần này (§6).</p>
+ <table><tr><th>Luồng</th><th>Thời gian làm</th><th>Chờ ngoài (riêng)</th><th>Tiết kiệm vs làm tay</th><th>Số mẫu</th></tr><tr><td>bugfix</td><td>28.0 phút</td><td class='muted'>0.0 phút</td><td><b>62%</b></td><td>8</td></tr><tr><td>feature</td><td>55.0 phút</td><td class='muted'>30.0 phút</td><td><b>52%</b></td><td>9</td></tr></table>
+ <p class="note">Chờ ngoài (chờ PO/BE) để RIÊNG — agent không cắt được phần này (§6).
+   <b>Tiết kiệm</b> = (baseline làm-tay − thời gian agent)/baseline; median; chỉ tính việc có `human_baseline_min`
+   (14/17 việc có baseline). Mục tiêu §6: ≥40%.</p>
 
  <h2>✋ Sửa tay (đầu vào loop ngoài)</h2>
- <p>Tổng lần sửa tay: <b>1</b>. Ba loại hay gặp nhất:</p>
- <ul><li>sai chuẩn — 1 lần</li></ul>
+ <p>Tổng lần sửa tay: <b>11</b>. Ba loại hay gặp nhất:</p>
+ <ul><li>sai chuẩn — 5 lần</li><li>hiểu sai yêu cầu — 3 lần</li><li>thiếu thông tin đầu vào — 2 lần</li></ul>
 
  <h2>🧪 Test &amp; 🐛 Bug</h2>
  <table>
   <tr><th>Chỉ số</th><th>Giá trị</th></tr>
-  <tr><td>Test XANH / ĐỎ</td><td>1 / 1</td></tr>
+  <tr><td>Test XANH / ĐỎ</td><td>4 / 1</td></tr>
   <tr><td>Bug gộp trùng (đỡ mở bản ghi mới)</td><td>6</td></tr>
   <tr><td>Bug quay lại sau khi sửa</td><td>0 (0%) — cao là đang chữa triệu chứng</td></tr>
   <tr><td>Câu hỏi: đang mở / đã trả lời</td><td>1 / 1</td></tr>

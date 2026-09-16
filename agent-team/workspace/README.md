@@ -26,6 +26,8 @@ task: <mã / mô tả ngắn>
 flow: feature | bugfix
 owner_now: <con đang cầm việc: spec-drafter | soat-spec | dev | test | fixbug | ui-ux | senior-uiux | reviewer>
 status: planning | in-progress | waiting-human | waiting-be | blocked | done
+pr_status: none | draft | changes-requested | approved | merged   # vòng review PR (playbook pr-review-loop)
+review_round: 0                                                    # số vòng review đã qua (chốt chặn: ≤3)
 updated: <YYYY-MM-DD HH:mm>
 links:
   review: reviews/review-<task>.md
@@ -51,6 +53,10 @@ links:
 
 ## Đang chờ (nếu status = waiting-*)
 <chờ ai / cái gì; trong lúc chờ đang chạy tiếp phần nào không liên quan>
+
+## Phản hồi review PR (vòng <n>)   # playbook pr-review-loop; agent chỉ ghi dòng "đã sửa"
+- [ ] <người: chỗ cần sửa> 
+- [x] <người: chỗ cần sửa>  → đã sửa: <agent: sửa gì, máy kiểm xanh chưa>
 ```
 
 Xem `TASK-EXAMPLE.md`.
