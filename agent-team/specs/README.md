@@ -24,6 +24,7 @@ draft ──► reviewing ──► approved ──► building ──► done
 ---
 feature: <mã / tên feature>
 status: draft | reviewing | approved | building | done
+priority: P0 | P1 | P2 | P3      # độ ưu tiên — dùng để xếp hàng đợi (work_queue.py). P0 = gấp nhất.
 version: 1
 approved_by: <tên PO người, hoặc null nếu chưa duyệt>
 updated: <YYYY-MM-DD>

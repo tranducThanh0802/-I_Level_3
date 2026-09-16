@@ -103,6 +103,8 @@ Bốn bậc trưởng thành: 1 (một bước, gọi tay) → 2 (một luồng 
 - [x] Báo cáo đánh giá §6 — `build_report.py` → report.html (median, chờ ngoài riêng).
 - [x] Bộ tình huống hồi quy + cổng chặn — `regression/` + `run_regression.py` (đã test qua/chặn).
 - [x] Lấp 4 lỗ hổng đỏ: baseline+size (§6 tính tiết kiệm), vòng review PR, cổng quét secret/PII, PO-agent ý-tưởng→spec.
+- [x] Lấp 🟡+🟢: hàng đợi ưu tiên (work_queue), adapter nạp bug store/CI (ingest_bug), điều phối Bậc 4 (playbook),
+      dọn bug (cleanup_bugs), chi phí, bộ 20 tình huống hồi quy.
 - [ ] **CHẶN:** lấp `project-knowledge.md` (cần đường dẫn repo iOS thật: lệnh build/test, nguồn crash, BE).
 - [ ] Bước 1 — con Fix bug làm một bước, gọi tay (bậc 1) — theo kế hoạch tuần 1 trong guide.
 - [ ] Phép thử bộ nhớ — báo lại bug mẫu, kiểm agent có tra ra cách sửa cũ.

@@ -308,6 +308,33 @@
   → CHẶN (exit 1); PII (email/SĐT) → cảnh báo. Cài pre-commit hook: `--install-hook`. Discord poster tự
   **redact** email/secret trước khi gửi. Đã test: repo sạch qua, secret giả bị chặn.
 
+## ADR-028 — Hàng đợi ưu tiên (agent lấy việc gì tiếp)
+- **Ngày:** 2026-09-16 · Lỗ hổng #5.
+- **Quyết định:** `scripts/work_queue.py` xếp hạng: bug điểm = mức_nặng*10 + số_lần_lặp (bug 'cần người'
+  tách riêng); spec theo `priority` P0>P3 (approved→Dev, reviewing→Soát spec). Ghi `work-queue.md`.
+  Thêm field `priority` vào specs.
+
+## ADR-029 — Adapter nạp bug tự động từ store/CI (gộp trùng)
+- **Ngày:** 2026-09-16 · Lỗ hổng #7 (Bậc 3 "tự nhận việc").
+- **Quyết định:** `scripts/ingest_bug.py` nhận crash (exc/frame/method/source) → tính fingerprint chuẩn
+  hoá (bỏ số dòng/offset/closure) → **trùng thì count++**, mới thì tạo BUG-<n>. Crashlytics/Sentry/CI gọi
+  script này. Đã test: mới→tạo, lặp→count=2.
+
+## ADR-030 — Con điều phối / Quản đốc (Bậc 4, thiết kế sẵn)
+- **Ngày:** 2026-09-16 · Lỗ hổng #6.
+- **Quyết định:** Playbook `playbooks/orchestrator.md`: đọc hàng đợi → giao đúng agent → theo dõi → leo
+  thang (bug cần người / >3 vòng review / chạm nhóm cấm) → cân tải (không 2 agent đụng 1 file). Trần
+  2–3 agent song song. **Kích hoạt khi lên Bậc 4**; trước đó điều phối tay bằng work_queue. Điều phối
+  KHÔNG nới quyền (không merge/không sửa cẩm nang).
+
+## ADR-031 — Dọn bug định kỳ + chi phí + bộ 20 tình huống + spec đổi giữa chừng (🟢)
+- **Ngày:** 2026-09-16 · Lỗ hổng #8, #10, #11, #9.
+- **Quyết định:**
+  - `scripts/cleanup_bugs.py`: archive bug fixed/wontfix quá 90 ngày + cảnh báo bug gắn file đã xoá (§3 "dọn định kỳ").
+  - Log thêm `cost_usd` (tùy chọn) → báo cáo tổng chi phí token.
+  - Bộ hồi quy nâng **10 → 20 tình huống** (đủ theo đề bài §4); run_regression 20/20.
+  - Spec đổi giữa chừng: specs đã có luật tăng version + changelog (đổi lớn → quay lại reviewing) + tình huống R16.
+
 ## Ghi chú — 4 refinement từ research (ĐỀ XUẤT, CHƯA áp)
 Chờ chủ dự án duyệt trước khi thành ADR chính thức. Nguồn: `docs/prior-art-research.md`.
 1. Giữ bước edit code **đơn luồng**; chỉ song song hoá soát spec / điều tra / sinh test.

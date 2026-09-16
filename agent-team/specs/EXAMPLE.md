@@ -1,6 +1,7 @@
 ---
 feature: coupon-checkout (IIP-1234)
 status: approved
+priority: P1
 version: 2
 approved_by: PO (người)
 updated: 2026-09-13

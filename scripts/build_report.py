@@ -207,6 +207,7 @@ page = f"""<!doctype html><html lang="vi"><head><meta charset="utf-8">
   <tr><td>Bug gộp trùng (đỡ mở bản ghi mới)</td><td>{dedup_saved}</td></tr>
   <tr><td>Bug quay lại sau khi sửa</td><td>{recurring} ({bug_recur_rate}%) — cao là đang chữa triệu chứng</td></tr>
   <tr><td>Câu hỏi: đang mở / đã trả lời</td><td>{q_open} / {q_done}</td></tr>
+  <tr><td>Chi phí token (tổng, nếu có log)</td><td>${round(sum(r.get('cost_usd',0) or 0 for r in runs),2)}</td></tr>
  </table>
  <p class="note">"Câu hỏi/tuần" cần mốc thời gian để chia tuần — sẽ tính khi có nhiều dữ liệu thật.</p>
 

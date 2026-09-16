@@ -31,6 +31,7 @@ Mỗi lần chạy = một dòng JSON append vào `runs.jsonl` (một dòng mộ
      "detail": "một câu"}
   ],
   "outcome": "used | discarded",   // cuối cùng dùng được hay bỏ
+  "cost_usd": 0.0,                  // (tùy chọn) chi phí token của lần chạy — để theo dõi tiền
   "pr": "<link PR hoặc null>",
   "handoff": {"code": true, "video": true, "before_after": true}
 }
