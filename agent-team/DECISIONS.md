@@ -373,6 +373,22 @@
   thật) được dựng ra để chặn — nếu không tự phát hiện và sửa, hệ thống sẽ báo cáo số đẹp mà không ai biết
   đó là agent tự chấm/tự đoán.
 
+## ADR-034 — Retro #2: phản biện độc lập TRƯỚC khi người duyệt; đo theo human_minutes
+- **Ngày:** 2026-09-27
+- **Bối cảnh:** Người dùng chặn lại: "handle vấn đề nghiêm trọng trước khi làm feature tiếp". 3 vấn đề đỏ:
+  (1) không có phản biện độc lập, (2) đo sai (wall-clock), (3) luồng bugfix chưa chứng minh.
+- **Đã làm:**
+  - **(2) Đo đúng:** thêm `human_minutes` (thời gian NGƯỜI thật bỏ ra) vào log; báo cáo tính tiết kiệm
+    = (baseline − human_minutes)/baseline, KHÔNG dùng agent wall-clock. Thiếu human_minutes → không tính.
+  - **(1) Phản biện độc lập THẬT:** spawn agent context mới review feature weather-forecast (đã duyệt).
+    Nó tìm ra **6 lỗi thật** người viết bỏ sót (1 HIGH vi phạm spec: không kiểm số-ngày==yêu-cầu; 1 data
+    race bị `@unchecked Sendable` giấu; 1 thiếu trạng thái rỗng UI; 3 low). Đã sửa hết, test 13→17 xanh.
+- **Bài học cốt lõi (SỬA QUY TRÌNH):** **Reviewer độc lập phải chạy TRƯỚC khi PO người duyệt, không phải
+  sau.** Lần này PO duyệt dựa trên tự-review của người viết → lọt defect → `done` premature. Thứ tự đúng:
+  con làm → **reviewer độc lập (agent context mới / người khác)** → sửa → **rồi mới** PO người duyệt.
+  → Cập nhật `playbooks/pr-review-loop.md`.
+- **Còn lại:** (3) luồng bugfix vẫn CHƯA chứng minh — là việc nghiêm trọng kế tiếp.
+
 ## Ghi chú — 4 refinement từ research (ĐỀ XUẤT, CHƯA áp)
 Chờ chủ dự án duyệt trước khi thành ADR chính thức. Nguồn: `docs/prior-art-research.md`.
 1. Giữ bước edit code **đơn luồng**; chỉ song song hoá soát spec / điều tra / sinh test.

@@ -24,6 +24,10 @@ Mỗi lần chạy = một dòng JSON append vào `runs.jsonl` (một dòng mộ
                                    //   đoán -> KHÔNG được tính là bằng chứng §6, báo cáo phải cảnh báo.
                                    //   Chỉ "human" (người ước lượng trước khi giao, hoặc đo nhóm đối
                                    //   chứng) mới được dùng để kết luận "tiết kiệm ≥40%".
+  "human_minutes": 12,             // ⭐ THỜI GIAN NGƯỜI THỰC SỰ BỎ RA cho việc này khi có agent: ra quyết
+                                   //   định, đọc review, duyệt, trả lời câu hỏi. KHÔNG phải agent wall-clock.
+                                   //   §6 đo "thời gian NGƯỜI" -> tiết kiệm = (human_baseline_min - human_minutes)/human_baseline_min.
+                                   //   Thiếu -> báo cáo KHÔNG tính tiết kiệm (không lấy wall-clock thay thế).
   "cost_source": "tracked | not-tracked",  // "not-tracked" thì cost_usd chỉ là placeholder, không phải 0 thật.
   "steps": [                       // qua bước nào
     {"step": "tra-bug-cu", "check": "-", "result": "hit:player-nil-url-crash"},

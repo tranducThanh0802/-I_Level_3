@@ -67,18 +67,20 @@ drop_rate = round(dropped / total * 100) if total else 0
 
 
 def saving_pct(r):
-    # CHỈ tính khi baseline do NGƯỜI cung cấp (baseline_source: human) — agent tự đoán
-    # không được tính là bằng chứng §6 (xem run-log.schema.md).
+    # §6 đo THỜI GIAN NGƯỜI. Tiết kiệm = (baseline làm-tay - thời gian người bỏ ra khi có agent)/baseline.
+    # CHỈ tính khi: baseline do NGƯỜI cung cấp (baseline_source=human) VÀ có human_minutes (thời gian
+    # người thật). KHÔNG lấy agent wall-clock thay thế (sai đối tượng đo).
     if r.get("baseline_source") != "human":
         return None
     b = r.get("human_baseline_min")
-    d = dur_min(r)
-    if b and d is not None and b > 0:
-        return round((b - d) / b * 100)
+    h = r.get("human_minutes")
+    if b and h is not None and b > 0:
+        return round((b - h) / b * 100)
     return None
 
 
 n_agent_est = sum(1 for r in runs if r.get("human_baseline_min") and r.get("baseline_source") != "human")
+n_no_humanmin = sum(1 for r in runs if r.get("baseline_source") == "human" and r.get("human_minutes") is None)
 sav_all = med([saving_pct(r) for r in runs])
 sav_by_flow = {}
 for r in runs:
@@ -162,6 +164,9 @@ if n_demo:
 if n_agent_est:
     flags.append(f"{n_agent_est} lần chạy có human_baseline_min do AGENT TỰ ĐOÁN (baseline_source != "
                  f"'human') — KHÔNG tính vào % tiết kiệm. Cần người ước lượng trước khi giao mới tính được.")
+if n_no_humanmin:
+    flags.append(f"{n_no_humanmin} lần chạy thiếu 'human_minutes' (thời gian NGƯỜI bỏ ra) — chưa tính được "
+                 f"tiết kiệm §6. Lưu ý: agent wall-clock KHÔNG phải thứ §6 đo.")
 if total and drop_rate == 0:
     flags.append("Tỷ lệ bỏ dở = 0% — §6: có thể đang GIẤU việc bỏ dở. Kiểm lại đã log đủ chưa.")
 if total < 5:
@@ -201,8 +206,8 @@ page = f"""<!doctype html><html lang="vi"><head><meta charset="utf-8">
  <h2>⏱️ Thời gian theo loại việc (median)</h2>
  <table><tr><th>Luồng</th><th>Thời gian làm</th><th>Chờ ngoài (riêng)</th><th>Tiết kiệm vs làm tay</th><th>Số mẫu</th></tr>{flow_rows or '<tr><td colspan=5 class=muted>chưa có dữ liệu</td></tr>'}</table>
  <p class="note">Chờ ngoài (chờ PO/BE) để RIÊNG — agent không cắt được phần này (§6).
-   <b>Tiết kiệm</b> = (baseline làm-tay − thời gian agent)/baseline; median; chỉ tính việc có `human_baseline_min`
-   ({n_baseline}/{total} việc có baseline). Mục tiêu §6: ≥40%.</p>
+   <b>Tiết kiệm (thời gian NGƯỜI)</b> = (baseline làm-tay − <b>human_minutes</b>)/baseline; median; chỉ tính
+   việc có baseline (người) + human_minutes. KHÔNG dùng agent wall-clock. Mục tiêu §6: ≥40%.</p>
 
  <h2>✋ Sửa tay (đầu vào loop ngoài)</h2>
  <p>Tổng lần sửa tay: <b>{len(fix_types)}</b>. Ba loại hay gặp nhất:</p>

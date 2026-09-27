@@ -9,8 +9,18 @@ draft ──► changes-requested ──► approved ──► merged
  (agent mở)   (người chê)        (người OK)   (NGƯỜI merge — agent KHÔNG merge)
 ```
 
+## Thứ tự BẮT BUỘC (bài học ADR-034)
+**Reviewer độc lập chạy TRƯỚC khi người duyệt.** Con làm KHÔNG được tự chấm mình rồi đưa thẳng người
+duyệt — sẽ lọt defect (đã xảy ra ở weather-forecast: người duyệt xong, reviewer độc lập mới tìm ra 6 lỗi).
+```
+con làm  →  REVIEWER ĐỘC LẬP (agent context mới, hoặc người khác)  →  sửa hết  →  PO người duyệt  →  done
+```
+Reviewer độc lập = spawn agent context mới (Agent tool) với nhiệm vụ ĐỐI KHÁNG (tìm lỗi), tự chạy máy kiểm,
+KHÔNG phải cùng agent vừa viết code.
+
 ## Vòng lặp
 ```
+0. REVIEWER ĐỘC LẬP soi (trước tiên) → tìm lỗi → con làm sửa → máy kiểm xanh lại.
 1. Agent mở PR nháp (code + video + ảnh trước/sau) → pr_status: draft → báo Discord phòng hỏi-người.
 2. NGƯỜI review → ghi feedback dạng checklist vào mục "## Phản hồi review PR" (workspace).
    - Không có gì sửa → pr_status: approved → NGƯỜI merge → pr_status: merged.

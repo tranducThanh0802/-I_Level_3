@@ -17,22 +17,22 @@
 </style></head><body><div class="wrap">
  <a class="back" href="dashboard.html">← Bảng điều khiển</a> · <a class="back" href="board.html">📊 Board</a>
  <h1>📈 Agent Team (bộ khung mẫu) — Báo cáo đánh giá</h1>
- <p class="top">Theo §6 đề bài · median (không mean) · chờ ngoài để riêng · 2026-09-27 20:43. Làm mới: <code>python3 scripts/build_report.py</code></p>
+ <p class="top">Theo §6 đề bài · median (không mean) · chờ ngoài để riêng · 2026-09-27 21:21. Làm mới: <code>python3 scripts/build_report.py</code></p>
  <div class="flag">⚠️ DỮ LIỆU DEMO (14/17 dòng) — CHỈ để xem báo cáo, KHÔNG phải số thật. Xoá: python3 scripts/seed_demo_data.py --clear</div>
 
  <div class="kpis">
    <div class="kpi"><div class="n">17</div><div class="l">Lần chạy (có log)</div></div>
    <div class="kpi"><div class="n" style="color:var(--green)">82%</div><div class="l">Dùng ngay (không sửa)</div></div>
    <div class="kpi"><div class="n" style="color:var(--red)">18%</div><div class="l">Bỏ giữa chừng</div></div>
-   <div class="kpi"><div class="n" style="color:var(--green)">57.0%</div><div class="l">Tiết kiệm vs làm tay (mục tiêu ≥40%)</div></div>
+   <div class="kpi"><div class="n" style="color:var(--green)">91.0%</div><div class="l">Tiết kiệm vs làm tay (mục tiêu ≥40%)</div></div>
    <div class="kpi"><div class="n" style="color:var(--red)">0%</div><div class="l">Bug quay lại</div></div>
  </div>
 
  <h2>⏱️ Thời gian theo loại việc (median)</h2>
- <table><tr><th>Luồng</th><th>Thời gian làm</th><th>Chờ ngoài (riêng)</th><th>Tiết kiệm vs làm tay</th><th>Số mẫu</th></tr><tr><td>bugfix</td><td>28.0 phút</td><td class='muted'>0.0 phút</td><td><b>62%</b></td><td>8</td></tr><tr><td>feature</td><td>55.0 phút</td><td class='muted'>30.0 phút</td><td><b>52%</b></td><td>9</td></tr></table>
+ <table><tr><th>Luồng</th><th>Thời gian làm</th><th>Chờ ngoài (riêng)</th><th>Tiết kiệm vs làm tay</th><th>Số mẫu</th></tr><tr><td>bugfix</td><td>28.0 phút</td><td class='muted'>0.0 phút</td><td><b>92%</b></td><td>8</td></tr><tr><td>feature</td><td>55.0 phút</td><td class='muted'>30.0 phút</td><td><b>90%</b></td><td>9</td></tr></table>
  <p class="note">Chờ ngoài (chờ PO/BE) để RIÊNG — agent không cắt được phần này (§6).
-   <b>Tiết kiệm</b> = (baseline làm-tay − thời gian agent)/baseline; median; chỉ tính việc có `human_baseline_min`
-   (14/17 việc có baseline). Mục tiêu §6: ≥40%.</p>
+   <b>Tiết kiệm (thời gian NGƯỜI)</b> = (baseline làm-tay − <b>human_minutes</b>)/baseline; median; chỉ tính
+   việc có baseline (người) + human_minutes. KHÔNG dùng agent wall-clock. Mục tiêu §6: ≥40%.</p>
 
  <h2>✋ Sửa tay (đầu vào loop ngoài)</h2>
  <p>Tổng lần sửa tay: <b>11</b>. Ba loại hay gặp nhất:</p>
