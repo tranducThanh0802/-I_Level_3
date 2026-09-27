@@ -5,18 +5,24 @@
 >
 > Ai ghi: agent + người, **cập nhật vào CUỐI mỗi phiên làm việc**. Trỏ tới file chi tiết, không chép nội dung.
 
-**Cập nhật lần cuối:** <YYYY-MM-DD HH:mm> — bởi <ai>
+**Cập nhật lần cuối:** 2026-09-27 — bởi Claude (Opus 4.8)
+
+> ⚠️ ĐÂY LÀ REPO HỆ AGENT (template). **Công việc THẬT đang chạy ở app WeatherApp:**
+> `/Users/tranducthanh0802/Project/WeatherApp` — mở `agent-team/STATE.md` của nó để tiếp tục.
+
+## Trạng thái hệ agent (repo này)
+- **Đã xây xong, đủ 3 tầng loop chạy THẬT** (trong/giữa/ngoài). 35 ADR trong `DECISIONS.md`.
+- Bộ nhớ 5 tầng + playbooks (feature-retro, pr-review-loop, idea-to-spec, orchestrator, ui-ux-review-rubric,
+  test-coverage) + scripts (board/report/review/work_queue/outer_loop/ingest_bug/scan_secrets/emit_activity/
+  build_*/init_project) + bộ 20 tình huống hồi quy. Đã push GitHub.
+- Cẩm nang mới nhất: `test-coverage.md` (sinh từ loop ngoài, ADR-035).
 
 ## Đang làm (task còn dở)
-| Task | Luồng | Đang ở bước | Con cầm | File chi tiết |
-|---|---|---|---|---|
-| _(chưa có)_ | | | | `workspace/<task>.md` |
-
-## Đang chờ (bị chặn)
-- _(vd: chờ PO trả lời câu hỏi X — xem workspace/<task>.md; trong lúc chờ đang làm tiếp phần Y)_
+- (repo template: không có task code dở — dùng làm khuôn cho project mới qua `init_project.py`)
 
 ## Đã xong gần đây (để không làm lại)
-- _(vd: 2026-09-13 — sửa bug player-nil-url, merged. Xem bugs/bug-player-nil-url-crash.md)_
+- 2026-09-27: Loop ngoài kích hoạt thật lần đầu (ADR-035) — thêm cẩm nang test-coverage, gác hồi quy 20/20.
+- Đã sửa bug outer_loop (đếm theo loại). Đã sửa init_project .gitignore + baseline_source/human_minutes.
 
 ## Việc kế tiếp (theo thứ tự)
 1. _(việc tiếp theo cụ thể)_
