@@ -1,6 +1,6 @@
 {
   "pass_rate": 1.0,
-  "date": "2026-09-13",
+  "date": "2026-09-27",
   "approved_by": "PO (người)",
-  "note": "Mốc baseline mẫu trên 10 tình huống hạt giống. Khi góp đủ 20 tình huống thật, chạy 1 lần với agent, người duyệt rồi cập nhật lại pass_rate ở đây."
+  "note": "Cập nhật sau khi loop ngoài thêm cẩm nang test-coverage.md (ADR-035): chạy bộ 20 -> 20/20, không tụt. Mốc baseline mẫu trên 20 tình huống hạt giống; khi chạy scenarios với agent thật thì ghi results.jsonl và cập nhật lại."
 }

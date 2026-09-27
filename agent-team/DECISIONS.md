@@ -389,6 +389,22 @@
   → Cập nhật `playbooks/pr-review-loop.md`.
 - **Còn lại:** (3) luồng bugfix vẫn CHƯA chứng minh — là việc nghiêm trọng kế tiếp.
 
+## ADR-035 — LOOP NGOÀI kích hoạt thật lần đầu: thêm cẩm nang test-coverage
+- **Ngày:** 2026-09-27
+- **Bối cảnh:** Qua 3 feature (forecast/hourly/multi-city), reviewer độc lập lần nào cũng bắt lỗi loại
+  "thiếu test" (test xanh nhưng lọt tiêu chí spec / bug logic). `outer_loop.py` đếm được **3 lần** → chạm
+  ngưỡng ≥3 của đề bài §4.
+- **Bug công cụ đã sửa trước đó:** `outer_loop.py` đếm theo (loại+detail) khớp chính xác → lỗi thật luôn
+  khác chi tiết nên KHÔNG BAO GIỜ chạm ngưỡng. Sửa: đếm theo **LOẠI** (đúng đề bài §5 "Loại: ...").
+- **Quyết định (loop ngoài hoàn tất đúng quy trình):**
+  1. outer_loop đề xuất → **PO người duyệt** (đề bài: cẩm nang qua người).
+  2. Thêm cẩm nang `memory/playbooks/test-coverage.md`: mỗi tiêu chí nghiệm thu ≥1 test map tới + bảng
+     "tiêu chí↔test" + reviewer độc lập kiểm độ phủ; "test xanh" là CẦN không ĐỦ.
+  3. Chạy **bộ 20 hồi quy** → 20/20, không tụt baseline → cập nhật baseline (2026-09-27).
+- **Ý nghĩa:** Đây là tầng 3 (loop ngoài) — thứ đề bài nói "khiến tháng sau khác tháng này" và "đa số
+  người dừng ở 2 tầng đầu không tới." Giờ đã chạy trọn: manual-fix thật → phát hiện lỗi lặp → sửa cẩm nang
+  qua người → gác hồi quy. Đủ 3 tầng loop hoạt động THẬT (không chỉ trên giấy).
+
 ## Ghi chú — 4 refinement từ research (ĐỀ XUẤT, CHƯA áp)
 Chờ chủ dự án duyệt trước khi thành ADR chính thức. Nguồn: `docs/prior-art-research.md`.
 1. Giữ bước edit code **đơn luồng**; chỉ song song hoá soát spec / điều tra / sinh test.
