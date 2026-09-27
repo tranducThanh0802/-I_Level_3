@@ -67,6 +67,10 @@ drop_rate = round(dropped / total * 100) if total else 0
 
 
 def saving_pct(r):
+    # CHỈ tính khi baseline do NGƯỜI cung cấp (baseline_source: human) — agent tự đoán
+    # không được tính là bằng chứng §6 (xem run-log.schema.md).
+    if r.get("baseline_source") != "human":
+        return None
     b = r.get("human_baseline_min")
     d = dur_min(r)
     if b and d is not None and b > 0:
@@ -74,6 +78,7 @@ def saving_pct(r):
     return None
 
 
+n_agent_est = sum(1 for r in runs if r.get("human_baseline_min") and r.get("baseline_source") != "human")
 sav_all = med([saving_pct(r) for r in runs])
 sav_by_flow = {}
 for r in runs:
@@ -154,6 +159,9 @@ n_demo = sum(1 for r in runs if r.get("demo") is True)
 if n_demo:
     flags.append(f"DỮ LIỆU DEMO ({n_demo}/{total} dòng) — CHỈ để xem báo cáo, KHÔNG phải số thật. "
                  "Xoá: python3 scripts/seed_demo_data.py --clear")
+if n_agent_est:
+    flags.append(f"{n_agent_est} lần chạy có human_baseline_min do AGENT TỰ ĐOÁN (baseline_source != "
+                 f"'human') — KHÔNG tính vào % tiết kiệm. Cần người ước lượng trước khi giao mới tính được.")
 if total and drop_rate == 0:
     flags.append("Tỷ lệ bỏ dở = 0% — §6: có thể đang GIẤU việc bỏ dở. Kiểm lại đã log đủ chưa.")
 if total < 5:

@@ -63,7 +63,25 @@ def main():
         with open(dc, "w", encoding="utf-8") as f:
             json.dump({"webhook_agents": "", "webhook_user": ""}, f, ensure_ascii=False, indent=2)
     with open(os.path.join(dst, ".gitignore"), "w", encoding="utf-8") as f:
-        f.write("scripts/discord_config.json\nscripts/.discord_state.json\n")
+        f.write(
+            "scripts/discord_config.json\n"
+            "scripts/.discord_state.json\n"
+            "agent-team/live/activity.jsonl\n"
+            "\n"
+            "# Rác hệ thống\n"
+            ".DS_Store\n"
+            "**/.DS_Store\n"
+            "\n"
+            "# Swift/Xcode (an toàn cho mọi project — build cache không nên vào git)\n"
+            ".build/\n"
+            "**/.build/\n"
+            "DerivedData/\n"
+            "*.xcuserstate\n"
+            "xcuserdata/\n"
+            "\n"
+            "# Nếu dùng xcodegen (project.yml -> .xcodeproj sinh lại được), bỏ comment dòng dưới:\n"
+            "# *.xcodeproj/\n"
+        )
 
     # 6) log rỗng cho project mới
     open(os.path.join(dst, "agent-team", "logs", "runs.jsonl"), "a", encoding="utf-8").close()

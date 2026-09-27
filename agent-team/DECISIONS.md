@@ -344,6 +344,35 @@
 - **Vì sao:** Quan sát lúc chạy là điều kiện để tin tưởng + can thiệp sớm khi agent đi sai. Đã test: feed
   màu trong terminal + đẩy Discord realtime.
 
+## ADR-033 — Retro sau lần e2e thật đầu tiên (WeatherApp): sửa 4 lỗ hổng quy trình
+- **Ngày:** 2026-09-27
+- **Bối cảnh:** Sau khi chạy e2e thật đầu tiên (feature weather-current), soát lại phát hiện Claude tự
+  đóng cả 4 vai (Dev/Test/Reviewer/PO-duyệt) trong một phiên liên tục — đúng cái ADR-009 cấm ("người tạo
+  không được tự chấm mình"). Ngoài ra `human_baseline_min`/`size`/`cost_usd` trong log là agent tự đoán,
+  không phải đo thật — nếu không gắn nhãn thì báo cáo "tiết kiệm 62%" là số giả mạo số thật.
+- **Quyết định:**
+  1. Thêm field `baseline_source` (human | agent-estimated) và `cost_source` (tracked | not-tracked) vào
+     schema log (`logs/run-log.schema.md`). **`saving_pct()` trong build_report.py/build_report_excel.py
+     CHỈ tính khi `baseline_source == "human"`** — agent tự đoán bị loại khỏi KPI, chỉ hiện cờ cảnh báo.
+  2. `init_project.py` sinh `.gitignore` đầy đủ hơn cho project mới: `.build/`, `DerivedData/`,
+     `xcuserdata/`, `.DS_Store`, `live/activity.jsonl` mặc định — trước đó project iOS nào cũng phải tự
+     vá tay (bug ở khuôn mẫu, không phải ở lần dùng).
+  3. Quyết định về quyền duyệt spec đã tự đổi sai (approved/done không qua người): **PO người xác nhận
+     giữ nguyên "done"**, coi các câu trả lời trắc nghiệm trước đó là đủ duyệt cho lần này. Từ nay, agent
+     KHÔNG tự flip `status` sang `approved`/`done` — phải dừng hỏi người xác nhận rõ ràng trước khi đổi.
+- **Phát hiện thêm khi tự kiểm chứng sửa lỗi:** project đã tạo trước (`WeatherApp`) mang **bản copy cứng**
+  của `scripts/*.py` từ lúc `init_project.py` chạy — sửa file trong repo khung KHÔNG tự lan sang project
+  con đã tồn tại (đúng như `docs/new-project-setup.md` mục "Nâng cấp bộ khung" đã cảnh báo, nhưng lần này
+  mới thấy hậu quả cụ thể: cảnh báo baseline agent-estimated không hiện ra vì project dùng script cũ).
+  Đã đồng bộ thủ công `build_report.py`/`build_report_excel.py` sang WeatherApp; xác nhận cảnh báo hiện
+  đúng. Chưa có cơ chế tự động nhắc "script khung đã đổi, project con nào cần đồng bộ" — để làm sau.
+- **Còn tồn (chưa sửa, ghi nhận để làm sau):** hạ tầng an toàn (scan_secrets hook, ingest_bug, work_queue,
+  outer_loop, Discord poster) chưa được dùng thật trong lần e2e đầu; rubric Senior UI/UX chưa áp dụng vào
+  UI đã dựng; mới 2 dòng log thật, còn xa mốc ≥5 mẫu/loại của §6.
+- **Vì sao quan trọng:** Đây đúng là loại lỗi mà toàn bộ ADR-009 (phản biện độc lập) và ADR-025 (baseline
+  thật) được dựng ra để chặn — nếu không tự phát hiện và sửa, hệ thống sẽ báo cáo số đẹp mà không ai biết
+  đó là agent tự chấm/tự đoán.
+
 ## Ghi chú — 4 refinement từ research (ĐỀ XUẤT, CHƯA áp)
 Chờ chủ dự án duyệt trước khi thành ADR chính thức. Nguồn: `docs/prior-art-research.md`.
 1. Giữ bước edit code **đơn luồng**; chỉ song song hoá soát spec / điều tra / sinh test.

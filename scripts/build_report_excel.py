@@ -40,6 +40,9 @@ def dur_min(r):
 
 
 def saving_pct(r):
+    # CHỈ tính khi baseline do NGƯỜI cung cấp — agent tự đoán không được tính là bằng chứng §6.
+    if r.get("baseline_source") != "human":
+        return None
     b = r.get("human_baseline_min"); d = dur_min(r)
     return round((b - d) / b * 100) if (b and d is not None and b > 0) else None
 

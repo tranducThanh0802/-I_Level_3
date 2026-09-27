@@ -20,6 +20,11 @@ Mỗi lần chạy = một dòng JSON append vào `runs.jsonl` (một dòng mộ
   "human_baseline_min": 120,       // ước lượng NẾU LÀM TAY mất bao lâu (phút) — để tính % tiết kiệm.
                                    //   Cách lấy: người ước lượng trước khi giao, hoặc đo nhóm đối chứng.
                                    //   Thiếu -> không tính được "giảm ≥40%" cho việc này.
+  "baseline_source": "human | agent-estimated",  // AI đặt con số baseline. "agent-estimated" = agent tự
+                                   //   đoán -> KHÔNG được tính là bằng chứng §6, báo cáo phải cảnh báo.
+                                   //   Chỉ "human" (người ước lượng trước khi giao, hoặc đo nhóm đối
+                                   //   chứng) mới được dùng để kết luận "tiết kiệm ≥40%".
+  "cost_source": "tracked | not-tracked",  // "not-tracked" thì cost_usd chỉ là placeholder, không phải 0 thật.
   "steps": [                       // qua bước nào
     {"step": "tra-bug-cu", "check": "-", "result": "hit:player-nil-url-crash"},
     {"step": "tim-nguyen-nhan", "check": "-", "result": "ok"},

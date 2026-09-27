@@ -45,7 +45,7 @@ def build():
             "agent": agent, "flow": flow, "task": task,
             "started_at": start.isoformat(), "ended_at": end.isoformat(),
             "wait_external_ms": wait * 60000,
-            "size": size, "human_baseline_min": baseline,
+            "size": size, "human_baseline_min": baseline, "baseline_source": "human", "cost_source": "not-tracked",
             "steps": steps,
             "failed_at": None if outcome == "used" else "chạy test",
             "manual_fixes": [{"type": ty, "detail": "demo"} for ty in fixes],
