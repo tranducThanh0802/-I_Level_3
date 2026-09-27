@@ -44,10 +44,13 @@ def main():
                 fixes.append((norm(mf.get("type", "?")), norm(mf.get("detail", ""))))
 
     by_type = Counter(t for t, _ in fixes)
-    by_issue = Counter(fixes)  # (type, detail) cụ thể
+    details_by_type = {}
+    for t, d in fixes:
+        details_by_type.setdefault(t, []).append(d)
 
-    proposals = [(k, c) for k, c in by_issue.items() if c >= THRESHOLD]
-    proposals.sort(key=lambda x: -x[1])
+    # Đếm theo LOẠI (đề bài §5: "Loại: sai chuẩn/thiếu thông tin/hiểu sai/sai logic").
+    # Lỗi thật luôn khác chi tiết -> nếu đòi khớp cả detail thì không bao giờ chạm ngưỡng.
+    proposals = [(t, c) for t, c in by_type.most_common() if c >= THRESHOLD]
 
     lines = ["# Đề xuất loop ngoài (tự sinh — CHỈ đề xuất, người duyệt)\n",
              f"> Ngưỡng: lỗi lặp ≥{THRESHOLD} lần mới đề xuất sửa cẩm nang (đề bài §4). "
@@ -61,11 +64,14 @@ def main():
     else:
         lines.append("- (chưa có lần sửa tay nào được ghi)")
 
-    lines.append("\n## Đề xuất cập nhật cẩm nang (lỗi lặp ≥3)")
+    lines.append("\n## Đề xuất cập nhật cẩm nang (loại lỗi lặp ≥3)")
     if proposals:
-        for (t, d), c in proposals:
-            lines.append(f"- **[{c} lần] loại: {t}** — \"{d}\"\n"
-                         f"    → xem xét sửa: {HINT.get(t, 'memory/playbooks/')}  · trạng thái: **chờ người duyệt**")
+        for t, c in proposals:
+            ds = details_by_type.get(t, [])
+            evidence = "; ".join(dict.fromkeys(ds))[:300]   # chi tiết (bỏ trùng) làm bằng chứng
+            lines.append(f"- **[{c} lần] loại: {t}** → xem xét sửa: {HINT.get(t, 'memory/playbooks/')}\n"
+                         f"    · bằng chứng: {evidence}\n"
+                         f"    · trạng thái: **chờ người duyệt** → sửa cẩm nang → run_regression → cập nhật baseline")
     else:
         lines.append(f"- Chưa có lỗi nào lặp ≥{THRESHOLD} lần. Chưa cần sửa cẩm nang "
                      "(nhét ngoại lệ 1–2 lần vào cẩm nang sẽ làm nó phình & tự mâu thuẫn — đề bài §4).")
