@@ -39,6 +39,9 @@ Bản đọc nhanh + quyết định: `agent-team/PROJECT-CONTEXT.md`.
 4. **"Xong" phải máy kiểm được** (build/test/lint/so ảnh). Agent tự khen không tính.
 5. **Bàn giao đủ 3 thứ**: code + video luồng vừa sửa + ảnh trước/sau. Thiếu video = chưa xong.
 6. **Chốt chặn loop**: >3 lần cùng bước → dừng; hết ngân sách → dừng; 2 vòng giống nhau → dừng.
+7. **Retro mỗi feature**: làm xong MỖI chức năng phải chạy `memory/playbooks/feature-retro.md` — theo dõi
+   quá trình để cải thiện agent (phản biện độc lập TRƯỚC khi người duyệt · đo human_minutes không phải
+   wall-clock · gắn nhãn số liệu · dùng thật hạ tầng đã dựng). "Máy kiểm xanh" che được lỗi quy trình.
 
 ## Bản đồ thư mục
 
