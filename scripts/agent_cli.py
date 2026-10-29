@@ -94,10 +94,56 @@ def cmd_gate(args):
     sys.exit(1 if rc else 0)
 
 
+def cmd_check():
+    """Chạy trọn bộ việc lặp đã tự động: health-check + gate QA. 1 lệnh trước khi giao."""
+    rc = 0
+    hc = os.path.join(SCRIPTS, "health_check.py")
+    if os.path.exists(hc):
+        print("== health-check =="); rc |= subprocess.call([sys.executable, hc])
+    print("\n== gate QA ==");
+    try: cmd_gate([])
+    except SystemExit as e: rc |= (e.code or 0)
+    sys.exit(1 if rc else 0)
+
+
+def cmd_new_skill(a):
+    """Tự động hoá việc lặp 'thêm skill mới': scaffold SKILL.md."""
+    if len(a) < 3:
+        print('Dùng: agent_cli.py new-skill <tên> <phòng> "<mô tả>"'); sys.exit(1)
+    name, dept, desc = a[0], a[1], " ".join(a[2:])
+    d = os.path.join(SKILLS, name); os.makedirs(d, exist_ok=True)
+    body = (f"---\nname: {name}\ndescription: {desc}\n---\n\n# {name}\n\n"
+            f"**Phòng:** {dept}  ·  **Checkpoint CEO (A4):** <điền>\n\n## Các bước\n1. <điền>\n\n"
+            f"## Đầu ra / bằng chứng\n- <điền>\n")
+    open(os.path.join(d, "SKILL.md"), "w", encoding="utf-8").write(body)
+    print(f"Đã tạo skill '{name}' ({dept}). Nhớ thêm vào DEPT trong agent_cli.py nếu muốn nhóm đúng phòng.")
+
+
+def cmd_log(a):
+    """Tự động hoá việc lặp 'ghi run-log': append 1 dòng runs.jsonl."""
+    import json, datetime
+    if len(a) < 2:
+        print('Dùng: agent_cli.py log "<task>" "<result>" [repeat_task]'); sys.exit(1)
+    now = datetime.datetime.now().astimezone()
+    run = {"run_id": now.strftime("%Y-%m-%dT%H-%M-%S") + "_" + re.sub(r"\W+", "-", a[0])[:24],
+           "agent": "ops", "flow": "ops", "task": a[0],
+           "repeat_task": a[2] if len(a) > 2 else None,
+           "started_at": now.isoformat(), "ended_at": now.isoformat(),
+           "size": "S", "baseline_source": "agent-estimated", "human_minutes": None,
+           "steps": [{"step": "run", "check": "-", "result": a[1]}],
+           "failed_at": None, "manual_fixes": [], "outcome": "used", "automated": True, "demo": False}
+    p = os.path.join(AGENT, "logs", "runs.jsonl")
+    with open(p, "a", encoding="utf-8") as f: f.write(json.dumps(run, ensure_ascii=False) + "\n")
+    print(f"Logged: {run['run_id']} (baseline_source=agent-estimated → chưa tính §6; CEO đặt baseline để hợp lệ)")
+
+
 def main():
     a = sys.argv[1:]
     cmd = a[0] if a else "help"
     if cmd == "skills": cmd_skills()
+    elif cmd == "check": cmd_check()
+    elif cmd == "new-skill": cmd_new_skill(a[1:])
+    elif cmd == "log": cmd_log(a[1:])
     elif cmd == "skill" and len(a) > 1: cmd_skill(a[1])
     elif cmd == "org": _show("ORG.md")
     elif cmd == "rubric": _show("RUBRIC-MAP.md")

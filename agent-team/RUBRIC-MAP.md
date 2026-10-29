@@ -34,4 +34,7 @@
 - A8.2 CLI: ĐANG DỰNG (`agent_cli.py`).
 - A4: có `acceptance-gate` + `independent-review` + core-rules §1 — ĐÃ CHẠY THẬT (vd feature Word of the Day qua gate + review độc lập bắt được bug thật).
 - A2: `knowledge-base` + `outer-loop` + `bug-memory` — có; cần thêm version/tiêu-chí-loại-bỏ để lên 4–5.
-- A3/A6: có `run-log`/`automate-repeat` — cần tích luỹ log dùng thật để chứng minh mốc.
+- A6: ĐÃ khai danh mục 13 việc lặp (`repeat-tasks.md`), **~85% auto hoàn toàn** (11/13; 2 việc cố ý giữ người).
+  `agent check` gộp 3 cổng thành 1 lệnh (hướng mốc 5 "loại bỏ việc lặp"). Lệnh: `agent_cli.py check|log|new-skill`.
+- A3: có `run-log` + `runs.jsonl` (19 run). ⚠️ Phần lớn `baseline_source=agent-estimated` → CHƯA tính tiết kiệm §6;
+  cần CEO đặt baseline (human) + chạy đều qua thời gian để log chứng minh tần suất (mốc 4–5).
