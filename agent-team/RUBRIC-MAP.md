@@ -33,7 +33,9 @@
 ## Hiện trạng (cập nhật khi tiến triển)
 - A8.2 CLI: ĐANG DỰNG (`agent_cli.py`).
 - A4: có `acceptance-gate` + `independent-review` + core-rules §1 — ĐÃ CHẠY THẬT (vd feature Word of the Day qua gate + review độc lập bắt được bug thật).
-- A2: `knowledge-base` + `outer-loop` + `bug-memory` — có; cần thêm version/tiêu-chí-loại-bỏ để lên 4–5.
+- A2: ĐÃ có version + changelog + tiêu chí loại bỏ (`memory/KB-CHANGELOG.md`, v3). Có bằng chứng SỬA/XÓA quy tắc sai
+  sau khi phát hiện đầu ra lỗi (emoji-tofu, lock per-topic, lint false-positive) + chứng minh đầu ra tốt lên (WotD qua
+  gate → review bắt bug). Hướng mốc 4–5. Lệnh: `agent_cli.py kb`.
 - A6: ĐÃ khai danh mục 13 việc lặp (`repeat-tasks.md`), **~85% auto hoàn toàn** (11/13; 2 việc cố ý giữ người).
   `agent check` gộp 3 cổng thành 1 lệnh (hướng mốc 5 "loại bỏ việc lặp"). Lệnh: `agent_cli.py check|log|new-skill`.
 - A3: có `run-log` + `runs.jsonl` (19 run). ⚠️ Phần lớn `baseline_source=agent-estimated` → CHƯA tính tiết kiệm §6;

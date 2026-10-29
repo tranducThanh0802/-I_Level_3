@@ -147,6 +147,8 @@ def main():
     elif cmd == "skill" and len(a) > 1: cmd_skill(a[1])
     elif cmd == "org": _show("ORG.md")
     elif cmd == "rubric": _show("RUBRIC-MAP.md")
+    elif cmd == "kb": _show(os.path.join("memory", "KB-CHANGELOG.md"))
+    elif cmd == "repeat": _show("repeat-tasks.md")
     elif cmd == "workflow":
         print("Luồng chuẩn 1 feature (ghép skill — A1):\n"
               "  CEO ra đề → research-idea → write-spec → review-spec →[CEO duyệt]→ make-acceptance\n"
