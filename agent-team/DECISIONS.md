@@ -411,3 +411,19 @@ Chờ chủ dự án duyệt trước khi thành ADR chính thức. Nguồn: `do
 2. **Test/harness bất khả sửa** với con Fix bug (hàng rào cấu trúc cho "không chữa triệu chứng").
 3. Bug DB thêm **kiểm-xung-đột ngữ nghĩa lúc ghi + temporal decay** ngoài fingerprint hash.
 4. Đặt **kỳ vọng iOS thấp hơn số Python**; ưu tiên snapshot testing hơn tap toạ độ.
+
+## ADR-037 — Tái cấu trúc "agent" thành CÔNG TY các skill nhỏ + CLI (A8) + bản đồ rubric
+- **Ngày:** 2026-10-29
+- **Bối cảnh:** Đề chấm (rubric 3 lớp) yêu cầu: hệ đóng gói hoàn chỉnh dựng-lại-được (A8), người duyệt ở
+  checkpoint (A4), workflow nối bước (A1), Knowledge Base có loop (A2), dùng thật + log (A3), auto ≥80% (A6).
+  CEO yêu cầu chia agent thành NHIỀU skill nhỏ như một công ty, CEO = người nắm quyền cao nhất; không gắn 1 sản phẩm.
+- **Quyết định:** Mô hình công ty: CEO (người) → 6 phòng (Sản phẩm/Kỹ thuật/Chất lượng/Tri thức/Vận hành/A7).
+  Mỗi vai trò = 1 Claude Code Skill `.claude/skills/<tên>/SKILL.md` (20 skill, đơn nhiệm, tái dùng — A8.1).
+  Hình hài đóng gói = CLI `scripts/agent_cli.py` (A8.2). Map tiêu chí ↔ skill ↔ bằng chứng ở `agent-team/RUBRIC-MAP.md`;
+  sơ đồ ở `agent-team/ORG.md`. Gate máy (A4): `ui_lint.py` + `acceptance_gate.py` + reviewer độc lập ≠ author.
+- **Vì sao:** Skill nhỏ đơn nhiệm → đóng gói/di chuyển/tái dùng dễ (A8.1); CLI = cửa vào chung dựng-lại-được (A8.2);
+  CEO duyệt checkpoint + gate máy = A4 có thật; RUBRIC-MAP làm "đảm bảo tiêu chí" kiểm được, không bằng lời.
+- **Hệ quả:** Thêm `.claude/skills/*` (20), `scripts/agent_cli.py`, `scripts/{ui_lint,acceptance_gate}.py`,
+  `agent-team/{ORG,RUBRIC-MAP}.md`, `agent-team/acceptance/_TEMPLATE.md`. Luồng chuẩn 1 feature ghép skill (A1)
+  đã chạy thật (Word of the Day qua gate + review độc lập). Còn: tích luỹ log dùng thật (A3/A6), version KB (A2→4/5), A7.
+- **Người duyệt:** CEO yêu cầu trực tiếp.
