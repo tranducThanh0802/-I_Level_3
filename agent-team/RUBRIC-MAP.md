@@ -38,5 +38,6 @@
   gate → review bắt bug). Hướng mốc 4–5. Lệnh: `agent_cli.py kb`.
 - A6: ĐÃ khai danh mục 13 việc lặp (`repeat-tasks.md`), **~85% auto hoàn toàn** (11/13; 2 việc cố ý giữ người).
   `agent check` gộp 3 cổng thành 1 lệnh (hướng mốc 5 "loại bỏ việc lặp"). Lệnh: `agent_cli.py check|log|new-skill`.
-- A3: có `run-log` + `runs.jsonl` (19 run). ⚠️ Phần lớn `baseline_source=agent-estimated` → CHƯA tính tiết kiệm §6;
-  cần CEO đặt baseline (human) + chạy đều qua thời gian để log chứng minh tần suất (mốc 4–5).
+- A3: VIỆC THẬT = **build app Lingora**. Đã log **6 run Lingora thật** (`product=Lingora iOS`; 4 qua gate, 2 review độc lập)
+  — agent dùng trên dữ liệu/việc thật, có log. ⚠️ `baseline_source=agent-estimated` → CHƯA tính tiết kiệm §6;
+  cần **CEO đặt baseline (human)** cho từng đầu việc + chạy đều qua thời gian (nhiều phiên) để chứng minh tần suất (mốc 4–5).

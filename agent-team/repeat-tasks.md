@@ -19,6 +19,18 @@
 | 12 | Retro sau feature | mỗi feature | ⚠️ bán-auto | `feature-retro` (người + agent) | **cố ý người** — cần phán đoán |
 | 13 | Review độc lập (verdict) | mỗi feature | ⚠️ bán-auto | `independent-review` (spawn agent; **người/agent khác quyết**) | **cố ý người** — A4 |
 
+## Đầu việc lặp THẬT trên sản phẩm (Lingora iOS — "việc thật" của CEO)
+> Đây mới là nguồn bằng chứng A3 chính (không phải việc meta framework ở trên). Log: `runs.jsonl` (`product=Lingora iOS`).
+
+| Đầu việc lặp | Tần suất phiên này | Phần AI làm | Phần auto/máy-chặn | Người (CEO) |
+|---|---|---|---|---|
+| **ui-parity-fix** (sửa UI khớp Android) | nhiều (champion, icon, leaderboard, lesson, WotD) | dò lệch + code sửa | `ui_lint` auto bắt cả LỚP icon/emoji; acceptance-gate | duyệt "đẹp"/đồng ý |
+| **bugfix** (crash/report) | video crash… | tra nguyên nhân + sửa + test | build/test xanh; bug-memory | duyệt |
+| **logic-parity** (khớp số/luật Android) | lock lesson, XP… | port logic | `port-oracle-tests` (test Android làm oracle) | duyệt |
+
+→ 6 run Lingora THẬT đã log phiên này; 4 qua gate máy, 2 qua review độc lập (WotD, lock). Việc LẶP được chặn bằng MÁY
+(ui_lint bắt mọi icon-tofu, acceptance-gate chặn "xong" non) → đúng tinh thần A6 "auto phần lặp của việc".
+
 ## Tỷ lệ tự động hoá
 - Tổng việc lặp khai: **13**
 - Auto hoàn toàn: **11** → **~85%** (≥80% → đạt mốc A6 ≥3).
