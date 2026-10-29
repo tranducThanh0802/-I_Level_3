@@ -46,6 +46,11 @@ def main():
         if fn.endswith(".py"):
             shutil.copy2(os.path.join(SRC, "scripts", fn), os.path.join(dst, "scripts", fn))
 
+    # 2b) .claude/skills/ — CÁC SKILL (công ty agent). Thiếu bước này → project mới không có skill (A8.1).
+    src_skills = os.path.join(SRC, ".claude", "skills")
+    if os.path.isdir(src_skills):
+        shutil.copytree(src_skills, os.path.join(dst, ".claude", "skills"), dirs_exist_ok=True)
+
     # 3) dashboard mẫu + CLAUDE.md (luật vận hành)
     for fn in ("dashboard.html", "CLAUDE.md"):
         src_f = os.path.join(SRC, fn)
