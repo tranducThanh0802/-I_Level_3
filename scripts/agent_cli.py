@@ -149,6 +149,7 @@ def main():
     elif cmd == "rubric": _show("RUBRIC-MAP.md")
     elif cmd == "kb": _show(os.path.join("memory", "KB-CHANGELOG.md"))
     elif cmd == "repeat": _show("repeat-tasks.md")
+    elif cmd == "replica": _show("ceo-profile.md")   # A7: hồ sơ để my-replica đứng thay CEO (quyết qua skill)
     elif cmd == "workflow":
         print("Luồng chuẩn 1 feature (ghép skill — A1):\n"
               "  CEO ra đề → research-idea → write-spec → review-spec →[CEO duyệt]→ make-acceptance\n"

@@ -28,7 +28,7 @@
 
 | Mã | Tiêu chí | Phủ bởi | Ghi chú |
 |----|----------|---------|---------|
-| A7 | Bản sao 1:1 online của CEO qua AI | `my-replica` (điểm cộng) | Làm sau khi Lớp 1–2 vững |
+| A7 | Bản sao 1:1 online của CEO qua AI | `my-replica` + `ceo-profile.md` | ĐÃ DỰNG: replica quyết việc thường theo phong cách CEO, ghi log ai-quyết; việc hệ trọng LEO LÊN người thật (ranh giới cứng). Lệnh `agent replica`. |
 
 ## Hiện trạng (cập nhật khi tiến triển)
 - A8.2 CLI: ĐANG DỰNG (`agent_cli.py`).
