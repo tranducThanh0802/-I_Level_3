@@ -137,6 +137,59 @@ def cmd_log(a):
     print(f"Logged: {run['run_id']} (baseline_source=agent-estimated → chưa tính §6; CEO đặt baseline để hợp lệ)")
 
 
+# Định tuyến ý định → skill (tất-định, minh bạch). Mỗi skill: danh sách từ khoá (vi/en).
+INTENT = {
+    "fix-bug": ["crash", "bug", "lỗi", "báo lỗi", "stack trace", "nil", "exception", "văng", "đứng màn"],
+    "research-idea": ["ý tưởng", "tìm hiểu", "nghiên cứu", "idea", "khám phá", "đề bài thô"],
+    "write-spec": ["spec", "yêu cầu", "tính năng", "feature", "viết quy trình", "đề bài", "làm màn", "thêm chức năng"],
+    "review-spec": ["soát spec", "duyệt spec", "review spec", "kiểm spec"],
+    "make-acceptance": ["acceptance", "nghiệm thu", "tiêu chí", "checklist", "điều kiện xong"],
+    "implement": ["code", "implement", "làm feature", "viết code", "dựng màn", "sửa ui", "thêm nút"],
+    "independent-review": ["review", "phản biện", "độc lập", "đối chiếu", "bác bỏ", "soát lại", "kiểm tra lại", "giống android", "parity"],
+    "ui-lint": ["icon", "emoji", "asset", "tofu", "biểu tượng", "ảnh icon"],
+    "acceptance-gate": ["xong chưa", "gate", "chốt xong", "đã xong", "done"],
+    "port-oracle-tests": ["oracle", "port test", "test android", "parity logic", "giá trị kỳ vọng", "số liệu"],
+    "regression-gate": ["hồi quy", "regression", "baseline", "tụt"],
+    "security-scan": ["secret", "pii", "bảo mật", "khoá", "token lộ", "rò rỉ"],
+    "knowledge-base": ["quy tắc", "luật", "knowledge", "kb", "version", "cẩm nang", "kiến thức"],
+    "bug-memory": ["bug cũ", "fingerprint", "đã sửa chưa", "gặp lại", "trùng bug"],
+    "outer-loop": ["retro", "loop ngoài", "cải thiện", "lỗi lặp", "sửa cẩm nang"],
+    "orchestrate": ["điều phối", "luồng", "orchestrate", "chạy feature", "trọn quy trình", "từ đầu đến cuối"],
+    "work-queue": ["hàng đợi", "queue", "nhận việc", "danh sách việc"],
+    "run-log": ["ghi log", "run log", "runs", "nhật ký chạy", "log lại"],
+    "automate-repeat": ["tự động", "việc lặp", "auto", "80%", "lặp lại", "automation"],
+    "my-replica": ["thay tôi", "bản sao", "replica", "quyết thay", "trợ lý của tôi"],
+}
+# Nhóm cấm-tự-quyết → KHÔNG route sang skill, mà LEO LÊN CEO (luật lõi §1/§2).
+ESCALATE = ["merge", "phát hành", "release", "đẩy store", "tiền", "thanh toán", "đăng nhập",
+            "xoá dữ liệu", "xóa dữ liệu", "api contract", "đổi schema", "thêm thư viện", "đổi kiến trúc"]
+
+
+def cmd_route(a):
+    if not a:
+        print('Dùng: agent_cli.py route "<đoạn text mô tả việc>"'); sys.exit(1)
+    text = " ".join(a).lower()
+    hits_esc = [k for k in ESCALATE if k in text]
+    if hits_esc:
+        print(f"⛔ DỪNG — chạm nhóm cấm-tự-quyết ({', '.join(hits_esc)}) → LEO LÊN CEO (luật #1/#2).")
+        print("   Agent/replica KHÔNG tự quyết. Đóng gói 2 phương án + hệ quả, hỏi người (core-rules §4).")
+        return
+    scored = []
+    for skill, kws in INTENT.items():
+        hit = [k for k in kws if k in text]
+        if hit: scored.append((len(hit), skill, hit))
+    scored.sort(reverse=True)
+    if not scored:
+        print("Không khớp từ khoá rõ ràng → bắt đầu `orchestrate` (nó tự route qua các phòng),")
+        print("hoặc `research-idea` nếu việc còn mơ hồ. (Mở rộng INTENT trong agent_cli.py nếu hay gặp.)")
+        return
+    print(f'Định tuyến cho: "{text[:70]}"')
+    for i, (n, skill, hit) in enumerate(scored[:3]):
+        tag = "→ DÙNG" if i == 0 else "  (hoặc)"
+        print(f"  {tag} {skill:<20} (khớp: {', '.join(hit)})")
+    print(f"\nGợi ý: chạy `agent_cli.py skill {scored[0][1]}` để xem các bước.")
+
+
 def main():
     a = sys.argv[1:]
     cmd = a[0] if a else "help"
@@ -154,6 +207,7 @@ def main():
         nsk = len(_all_skills())
         print("🏢 CÔNG TY AGENT ĐANG BẬT — bạn KHÔNG phải Claude thuần, đang vận hành theo agent-team.\n"
               f"- {nsk} skill (`agent_cli.py skills`) · Luồng (`workflow`) · Rubric (`rubric`) · Tổ chức (`org`).\n"
+              "- Phân loại việc → skill: `agent_cli.py route \"<đoạn text>\"` (chặn nhóm cấm-tự-quyết → leo lên CEO).\n"
               "- LUẬT CỨNG: 'Xong' = acceptance_gate.py XANH + reviewer ĐỘC LẬP ≠ author PASS; agent tự khen không tính.\n"
               "- Agent KHÔNG merge/phát hành (luật #2) — việc đó của CEO (người).\n"
               "- Pre-commit cưỡng chế: scan_secrets + ui_lint. Cổng 'xong': `agent_cli.py gate`.\n"
@@ -161,6 +215,7 @@ def main():
     elif cmd == "status":   # statusLine: 1 dòng ngắn cho thấy agent-mode bật
         hook = "pre-commit✓" if os.path.exists(os.path.join(ROOT, ".git", "hooks", "pre-commit")) else "pre-commit✗"
         print(f"🏢 agent-company · {len(_all_skills())} skills · gate:{hook}")
+    elif cmd == "route": cmd_route(a[1:])
     elif cmd == "workflow":
         print("Luồng chuẩn 1 feature (ghép skill — A1):\n"
               "  CEO ra đề → research-idea → write-spec → review-spec →[CEO duyệt]→ make-acceptance\n"
