@@ -33,9 +33,21 @@ def _cfg():
 
 def _api(path, token):
     req = urllib.request.Request("https://discord.com/api/v10" + path,
-                                 headers={"Authorization": f"Bot {token}", "User-Agent": "agent-intake/1.0"})
+                                 headers={"Authorization": f"Bot {token}", "User-Agent": "DiscordBot (local,1.0)"})
     with urllib.request.urlopen(req, timeout=20) as r:
         return json.loads(r.read().decode("utf-8"))
+
+def _ack(text):
+    """Báo NGAY ra Discord (webhook) = trạng thái 'loading', để người gửi thấy agent đã nhận."""
+    cfg = _cfg(); url = cfg.get("webhook_agents") or cfg.get("webhook_user")
+    if not url: return
+    try:
+        data = json.dumps({"username": "Agent Team", "content": text}).encode()
+        req = urllib.request.Request(url, data=data,
+              headers={"Content-Type": "application/json", "User-Agent": "AgentTeam/1.0 (local)"})
+        urllib.request.urlopen(req, timeout=10)
+    except Exception:
+        pass
 
 def _download(url, dest):
     try:
@@ -59,6 +71,8 @@ def poll_once():
     except urllib.error.HTTPError as e:
         print(f"⛔ Discord API lỗi {e.code} (token/quyền/intent?)."); return 0
     msgs = sorted(msgs, key=lambda m: int(m["id"]))   # cũ → mới
+    try: bot_id = _api("/users/@me", token)["id"]
+    except Exception: bot_id = None
     n = 0
     for m in msgs:
         if m.get("author", {}).get("bot") or m.get("webhook_id"):   # bỏ tin BOT + tin do WEBHOOK đẩy ra
@@ -78,6 +92,7 @@ def poll_once():
             f.write(json.dumps({"id": iid, "at": m.get("timestamp"), "who": who,
                                 "text": text, "docs": docs}, ensure_ascii=False) + "\n")
         # 2) CHỈ tạo việc (work-item) nếu có hành động rõ (route ra skill / cấm-tự-quyết); còn lại chỉ là trao đổi
+        mentioned = bool(bot_id) and any(u.get("id") == bot_id for u in m.get("mentions", []))
         esc, scored = agent_cli._route(text or " ".join(docs))
         if esc or scored:
             routed = "ESCALATE-CEO" if esc else scored[0][2]
@@ -86,9 +101,12 @@ def poll_once():
             if docs: body += "\n## Tài liệu đính kèm\n" + "".join(f"- {d}\n" for d in docs)
             open(os.path.join(agent_cli.INTAKE, f"{iid}.md"), "w", encoding="utf-8").write(body)
             print(f"📥 việc: {who}: {(text or '[tài liệu]')[:45]} → {routed}" + (f" (+{len(docs)} tệp)" if docs else ""))
+            _ack(f"⏳ **{who}** — đã nhận, agent đang xử lý… (`{routed}`)")   # LOADING ngay
             n += 1
         else:
             print(f"💬 ghi context (trao đổi): {who}: {text[:50]}")
+            if mentioned:   # có gọi @bot nhưng không phải việc → vẫn báo đã nhận
+                _ack(f"⏳ **{who}** — đã nhận, agent sẽ phản hồi…")
     if msgs:
         json.dump({"last_id": msgs[-1]["id"]}, open(STATE, "w"))
     print(f"Đã nhận {n} việc mới." if n else "Không có tin mới.")
@@ -97,8 +115,10 @@ def poll_once():
 
 def main():
     if "--loop" in sys.argv:
+        secs = int(_cfg().get("poll_seconds", 10))   # nhanh hơn (mặc định 10s; chỉnh 'poll_seconds' trong config)
+        print(f"▶ intake --loop mỗi {secs}s (Ctrl+C để dừng)")
         while True:
-            poll_once(); time.sleep(30)
+            poll_once(); time.sleep(secs)
     else:
         poll_once()
 
