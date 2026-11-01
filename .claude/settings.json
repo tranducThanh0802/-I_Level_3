@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 scripts/agent_cli.py boot",
+            "statusMessage": "Nạp agent-mode (công ty agent)"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "python3 scripts/agent_cli.py status"
+  }
+}

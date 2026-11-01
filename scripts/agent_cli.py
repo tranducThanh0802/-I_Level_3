@@ -150,6 +150,17 @@ def main():
     elif cmd == "kb": _show(os.path.join("memory", "KB-CHANGELOG.md"))
     elif cmd == "repeat": _show("repeat-tasks.md")
     elif cmd == "replica": _show("ceo-profile.md")   # A7: hồ sơ để my-replica đứng thay CEO (quyết qua skill)
+    elif cmd == "boot":   # SessionStart hook in cái này → mỗi phiên BẬT agent-mode (không phải Claude thuần)
+        nsk = len(_all_skills())
+        print("🏢 CÔNG TY AGENT ĐANG BẬT — bạn KHÔNG phải Claude thuần, đang vận hành theo agent-team.\n"
+              f"- {nsk} skill (`agent_cli.py skills`) · Luồng (`workflow`) · Rubric (`rubric`) · Tổ chức (`org`).\n"
+              "- LUẬT CỨNG: 'Xong' = acceptance_gate.py XANH + reviewer ĐỘC LẬP ≠ author PASS; agent tự khen không tính.\n"
+              "- Agent KHÔNG merge/phát hành (luật #2) — việc đó của CEO (người).\n"
+              "- Pre-commit cưỡng chế: scan_secrets + ui_lint. Cổng 'xong': `agent_cli.py gate`.\n"
+              "- LÀM TRƯỚC: đọc `agent-team/STATE.md`. Gate đang chạy = bằng chứng agent thật (không phải lời).")
+    elif cmd == "status":   # statusLine: 1 dòng ngắn cho thấy agent-mode bật
+        hook = "pre-commit✓" if os.path.exists(os.path.join(ROOT, ".git", "hooks", "pre-commit")) else "pre-commit✗"
+        print(f"🏢 agent-company · {len(_all_skills())} skills · gate:{hook}")
     elif cmd == "workflow":
         print("Luồng chuẩn 1 feature (ghép skill — A1):\n"
               "  CEO ra đề → research-idea → write-spec → review-spec →[CEO duyệt]→ make-acceptance\n"

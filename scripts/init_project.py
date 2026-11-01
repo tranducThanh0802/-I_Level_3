@@ -43,13 +43,17 @@ def main():
     # 2) scripts/*.py (KHÔNG copy bí mật / state)
     os.makedirs(os.path.join(dst, "scripts"), exist_ok=True)
     for fn in os.listdir(os.path.join(SRC, "scripts")):
-        if fn.endswith(".py"):
+        if fn.endswith((".py", ".sh")):
             shutil.copy2(os.path.join(SRC, "scripts", fn), os.path.join(dst, "scripts", fn))
 
     # 2b) .claude/skills/ — CÁC SKILL (công ty agent). Thiếu bước này → project mới không có skill (A8.1).
     src_skills = os.path.join(SRC, ".claude", "skills")
     if os.path.isdir(src_skills):
         shutil.copytree(src_skills, os.path.join(dst, ".claude", "skills"), dirs_exist_ok=True)
+    # settings.json (SessionStart hook bật agent-mode + statusLine) — để project mới cũng tự bật agent.
+    src_settings = os.path.join(SRC, ".claude", "settings.json")
+    if os.path.exists(src_settings):
+        shutil.copy2(src_settings, os.path.join(dst, ".claude", "settings.json"))
 
     # 3) dashboard mẫu + CLAUDE.md (luật vận hành)
     for fn in ("dashboard.html", "CLAUDE.md"):
@@ -109,7 +113,8 @@ def main():
     print(f"✅ Đã tạo bộ quản lý cho '{name}' tại: {dst}")
     print("Tiếp theo:")
     print(f"  1) Điền 2 webhook vào {dc}")
-    print(f"  2) cd '{dst}' && python3 scripts/build_board.py && python3 scripts/build_exchanges.py")
+    print(f"  2) cd '{dst}' && sh scripts/install_hooks.sh  (cài pre-commit gate: scan_secrets + ui_lint)")
+    print(f"     rồi python3 scripts/agent_cli.py check  (soát sức khoẻ công ty agent)")
     print("  3) Mở dashboard.html")
     print("  4) Điền agent-team/memory/project-knowledge.md (lệnh build/test, nguồn crash, BE)")
 
