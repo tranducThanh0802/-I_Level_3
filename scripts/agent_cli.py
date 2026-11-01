@@ -265,6 +265,28 @@ def cmd_context(a):
         print(f"  · {m.get('who','?'):<12} {(m.get('text') or '[tài liệu]')}{doc}")
 
 
+def cmd_triage(a):
+    """Tầng 2 (b): phân loại intake thô → BUG / SPEC / CEO / chỉ-trao-đổi. KHÔNG tự đổ vào nguồn
+    (severity/priority là quyết định NGƯỜI — A4); chỉ đề xuất đích để CEO/agent tạo bug/spec chuẩn."""
+    BUGLIKE = {"fix-bug", "bug-memory"}
+    SPECLIKE = {"write-spec", "make-acceptance", "review-spec", "research-idea", "implement"}
+    pend = [p for p in sorted(glob.glob(os.path.join(INTAKE, "*.md")))
+            if "status: pending" in open(p, encoding="utf-8").read()]
+    if not pend: print("Không có intake chờ triage."); return
+    print("🔀 TRIAGE (intake thô → đích). CEO/agent gắn severity/priority khi tạo bug/spec thật:")
+    for p in pend:
+        fm = _frontmatter(p); r = fm.get("routed_skill", "")
+        snippet = open(p, encoding="utf-8").read().split("# Yêu cầu", 1)[-1].strip().splitlines()
+        snippet = (snippet[0] if snippet else "")[:50]
+        if r == "ESCALATE-CEO": dest = "⛔ LEO CEO (cấm-tự-quyết) — KHÔNG vào work-queue agent"
+        elif r in BUGLIKE: dest = "🐛 BUG → tạo memory/bugs/<id>.md (severity) → work_queue.py"
+        elif r in SPECLIKE: dest = "📋 SPEC → tạo specs/<id>.md (priority,status) → work_queue.py"
+        else: dest = f"↪ chạy trực tiếp skill '{r}' (hoặc để trao đổi/context)"
+        print(f"  [{fm.get('id')}] {fm.get('requester',''):<12} {dest}")
+        print(f"      \"{snippet}\"")
+    print("\n→ Sau khi tạo bug/spec: `python3 scripts/work_queue.py` để xếp lại; `intake done <id>` đóng intake.")
+
+
 def main():
     a = sys.argv[1:]
     cmd = a[0] if a else "help"
@@ -293,6 +315,7 @@ def main():
     elif cmd == "route": cmd_route(a[1:])
     elif cmd == "intake": cmd_intake(a[1:])
     elif cmd == "context": cmd_context(a[1:])
+    elif cmd == "triage": cmd_triage(a[1:])
     elif cmd == "workflow":
         print("Luồng chuẩn 1 feature (ghép skill — A1):\n"
               "  CEO ra đề → research-idea → write-spec → review-spec →[CEO duyệt]→ make-acceptance\n"
