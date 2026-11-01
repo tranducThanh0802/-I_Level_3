@@ -8,3 +8,9 @@ scripts/.discord_state.json
 
 # Feed live ephemeral (theo dõi lúc chạy, không phải hồ sơ)
 agent-team/live/activity.jsonl
+
+# Intake runtime (dữ liệu nạp từ Discord/người — của từng project)
+agent-team/intake/*.md
+agent-team/intake/channel-log.jsonl
+agent-team/intake/docs/
+scripts/.discord_intake_state.json

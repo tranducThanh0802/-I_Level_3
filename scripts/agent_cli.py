@@ -182,29 +182,87 @@ ESCALATE = ["merge", "phát hành", "release", "đẩy store", "lên store", "ti
             "đổi schema", "thêm thư viện", "đổi kiến trúc", "sửa config phát hành"]
 
 
-def cmd_route(a):
-    if not a:
-        print('Dùng: agent_cli.py route "<đoạn text mô tả việc>"'); sys.exit(1)
-    text = " ".join(a).lower()
-    hits_esc = [k for k in ESCALATE if k in text]
-    if hits_esc:
-        print(f"⛔ DỪNG — chạm nhóm cấm-tự-quyết ({', '.join(hits_esc)}) → LEO LÊN CEO (luật #1/#2).")
-        print("   Agent/replica KHÔNG tự quyết. Đóng gói 2 phương án + hệ quả, hỏi người (core-rules §4).")
-        return
+def _route(text):
+    """Trả (escalate_hits, scored[(count,len,skill,hit)]) — dùng chung cho route + intake."""
+    text = text.lower()
+    esc = [k for k in ESCALATE if k in text]
     scored = []
     for skill, kws in INTENT.items():
         hit = [k for k in kws if k in text]
-        if hit: scored.append((len(hit), sum(len(k) for k in hit), skill, hit))   # nhiều khớp + từ khoá dài/cụ thể → ưu tiên
+        if hit: scored.append((len(hit), sum(len(k) for k in hit), skill, hit))
     scored.sort(key=lambda x: (x[0], x[1]), reverse=True)
-    if not scored:
-        print("Không khớp từ khoá rõ ràng → bắt đầu `orchestrate` (nó tự route qua các phòng),")
-        print("hoặc `research-idea` nếu việc còn mơ hồ. (Mở rộng INTENT trong agent_cli.py nếu hay gặp.)")
+    return esc, scored
+
+
+def cmd_route(a):
+    if not a:
+        print('Dùng: agent_cli.py route "<đoạn text mô tả việc>"'); sys.exit(1)
+    esc, scored = _route(" ".join(a))
+    if esc:
+        print(f"⛔ DỪNG — chạm nhóm cấm-tự-quyết ({', '.join(esc)}) → LEO LÊN CEO (luật #1/#2).")
+        print("   Agent/replica KHÔNG tự quyết. Đóng gói 2 phương án + hệ quả, hỏi người (core-rules §4).")
         return
-    print(f'Định tuyến cho: "{text[:70]}"')
+    if not scored:
+        print("Không khớp từ khoá rõ ràng → bắt đầu `orchestrate`, hoặc `research-idea` nếu mơ hồ."); return
+    print(f'Định tuyến cho: "{" ".join(a)[:70]}"')
     for i, (n, _l, skill, hit) in enumerate(scored[:3]):
-        tag = "→ DÙNG" if i == 0 else "  (hoặc)"
-        print(f"  {tag} {skill:<20} (khớp: {', '.join(hit)})")
-    print(f"\nGợi ý: chạy `agent_cli.py skill {scored[0][1]}` để xem các bước.")
+        print(f"  {'→ DÙNG' if i == 0 else '  (hoặc)'} {skill:<20} (khớp: {', '.join(hit)})")
+    print(f"\nGợi ý: chạy `agent_cli.py skill {scored[0][2]}` để xem các bước.")
+
+
+INTAKE = os.path.join(AGENT, "intake")
+
+def cmd_intake(a):
+    """Cổng NHẬN VIỆC đa người (PO/dev/QA nạp yêu cầu + tài liệu) → hàng đợi chung, tự route."""
+    import datetime
+    os.makedirs(INTAKE, exist_ok=True)
+    sub = a[0] if a else "list"
+    if sub == "add":
+        if len(a) < 3:
+            print('Dùng: intake add "<người gửi>" "<yêu cầu>" [đường-dẫn-tài-liệu]'); sys.exit(1)
+        requester, rest = a[1], a[2:]
+        doc = rest.pop() if rest and os.path.exists(rest[-1]) else None
+        text = " ".join(rest)
+        iid = datetime.datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+        esc, scored = _route(text)
+        routed = "ESCALATE-CEO" if esc else (scored[0][2] if scored else "orchestrate")
+        body = (f"---\nid: {iid}\nsource: manual\nrequester: {requester}\nstatus: pending\n"
+                f"routed_skill: {routed}\n---\n# Yêu cầu\n{text}\n")
+        if doc: body += f"\n## Tài liệu đính kèm\n- {doc}\n"
+        open(os.path.join(INTAKE, iid + ".md"), "w", encoding="utf-8").write(body)
+        print(f"✅ Nhận việc {iid} từ '{requester}' → route: {routed}" + (f" · đính kèm: {doc}" if doc else ""))
+    elif sub == "done" and len(a) > 1:
+        p = os.path.join(INTAKE, a[1] + ".md")
+        if not os.path.exists(p): print(f"Không có việc {a[1]}"); sys.exit(1)
+        t = open(p, encoding="utf-8").read().replace("status: pending", "status: done")
+        open(p, "w", encoding="utf-8").write(t); print(f"✅ Đóng việc {a[1]}")
+    else:   # list
+        pend = [p for p in sorted(glob.glob(os.path.join(INTAKE, "*.md")))
+                if "status: pending" in open(p, encoding="utf-8").read()]
+        if not pend: print("Hàng đợi intake trống."); return
+        print(f"📥 HÀNG ĐỢI INTAKE — {len(pend)} việc chờ (PO/dev/QA nạp vào):")
+        for p in pend:
+            fm = _frontmatter(p)
+            txt = open(p, encoding="utf-8").read().split("# Yêu cầu", 1)[-1].strip().splitlines()
+            snippet = (txt[0] if txt else "")[:60]
+            flag = "⛔LEO-CEO" if fm.get("routed_skill") == "ESCALATE-CEO" else "→ " + fm.get("routed_skill", "?")
+            print(f"  [{fm.get('id')}] {fm.get('requester',''):<12} {flag:<22} {snippet}")
+        print("\nAgent: chạy `skill <routed_skill>` cho từng việc; xong → `intake done <id>`; báo lại Discord qua post_to_discord.py.")
+
+
+def cmd_context(a):
+    """In TRỌN hội thoại kênh chung (channel-log) để agent/CEO 'nắm hết thông tin' trước khi quyết."""
+    import json as _j
+    log = os.path.join(INTAKE, "channel-log.jsonl")
+    if not os.path.exists(log):
+        print("Chưa có context (chưa nối Discord intake hoặc chưa có tin). Xem discord_intake.py."); return
+    rows = [l for l in open(log, encoding="utf-8") if l.strip()]
+    n = int(a[0]) if a and a[0].isdigit() else 30
+    print(f"🧠 CONTEXT KÊNH CHUNG — {len(rows)} tin (hiện {min(n,len(rows))} gần nhất). Agent/CEO đọc trước khi quyết:")
+    for l in rows[-n:]:
+        m = _j.loads(l)
+        doc = f"  [+{len(m['docs'])} tệp]" if m.get("docs") else ""
+        print(f"  · {m.get('who','?'):<12} {(m.get('text') or '[tài liệu]')}{doc}")
 
 
 def main():
@@ -233,6 +291,8 @@ def main():
         hook = "pre-commit✓" if os.path.exists(os.path.join(ROOT, ".git", "hooks", "pre-commit")) else "pre-commit✗"
         print(f"🏢 agent-company · {len(_all_skills())} skills · gate:{hook}")
     elif cmd == "route": cmd_route(a[1:])
+    elif cmd == "intake": cmd_intake(a[1:])
+    elif cmd == "context": cmd_context(a[1:])
     elif cmd == "workflow":
         print("Luồng chuẩn 1 feature (ghép skill — A1):\n"
               "  CEO ra đề → research-idea → write-spec → review-spec →[CEO duyệt]→ make-acceptance\n"
