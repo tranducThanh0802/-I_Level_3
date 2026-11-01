@@ -138,31 +138,48 @@ def cmd_log(a):
 
 
 # Định tuyến ý định → skill (tất-định, minh bạch). Mỗi skill: danh sách từ khoá (vi/en).
+# Từ khoá ý định → skill. Nới theo CÁCH NÓI THẬT của CEO (rút từ các phiên Lingora).
 INTENT = {
-    "fix-bug": ["crash", "bug", "lỗi", "báo lỗi", "stack trace", "nil", "exception", "văng", "đứng màn"],
-    "research-idea": ["ý tưởng", "tìm hiểu", "nghiên cứu", "idea", "khám phá", "đề bài thô"],
-    "write-spec": ["spec", "yêu cầu", "tính năng", "feature", "viết quy trình", "đề bài", "làm màn", "thêm chức năng"],
+    "fix-bug": ["crash", "bug", "stack trace", "nil", "exception", "văng", "đứng màn", "báo lỗi",
+                "thi xong báo lỗi", "không update", "ko update", "không lưu", "ko lưu", "mất thông tin",
+                "không hoạt động", "không được", "không đc", "ko đc", "bị lỗi", "lag", "giật",
+                "chưa mượt", "không mượt", "ko mượt", "load gì", "sao ko", "sao không", "chậm"],
+    "research-idea": ["ý tưởng", "tìm hiểu", "nghiên cứu", "idea", "khám phá", "đề bài thô", "gom yêu cầu"],
+    "write-spec": ["viết spec", "yêu cầu", "tính năng mới", "feature mới", "viết quy trình", "đề bài",
+                   "thêm chức năng", "làm màn mới", "thiết kế luồng"],
     "review-spec": ["soát spec", "duyệt spec", "review spec", "kiểm spec"],
     "make-acceptance": ["acceptance", "nghiệm thu", "tiêu chí", "checklist", "điều kiện xong"],
-    "implement": ["code", "implement", "làm feature", "viết code", "dựng màn", "sửa ui", "thêm nút"],
-    "independent-review": ["review", "phản biện", "độc lập", "đối chiếu", "bác bỏ", "soát lại", "kiểm tra lại", "giống android", "parity"],
-    "ui-lint": ["icon", "emoji", "asset", "tofu", "biểu tượng", "ảnh icon"],
-    "acceptance-gate": ["xong chưa", "gate", "chốt xong", "đã xong", "done"],
-    "port-oracle-tests": ["oracle", "port test", "test android", "parity logic", "giá trị kỳ vọng", "số liệu"],
-    "regression-gate": ["hồi quy", "regression", "baseline", "tụt"],
-    "security-scan": ["secret", "pii", "bảo mật", "khoá", "token lộ", "rò rỉ"],
-    "knowledge-base": ["quy tắc", "luật", "knowledge", "kb", "version", "cẩm nang", "kiến thức"],
-    "bug-memory": ["bug cũ", "fingerprint", "đã sửa chưa", "gặp lại", "trùng bug"],
-    "outer-loop": ["retro", "loop ngoài", "cải thiện", "lỗi lặp", "sửa cẩm nang"],
-    "orchestrate": ["điều phối", "luồng", "orchestrate", "chạy feature", "trọn quy trình", "từ đầu đến cuối"],
+    "implement": ["implement", "viết code", "dựng màn", "sửa ui", "sửa lại", "làm lại", "thêm nút",
+                  "copy từ android", "copy json", "copy hết", "làm nổi bật", "bị mờ", "màu sắc", "căn lại",
+                  "chưa đẹp", "tệ quá", "ui sai", "ui/ux", "thiết kế lại", "đổi màu", "font", "title",
+                  "splash", "onboarding", "làm đẹp", "lưu database", "lưu db", "lưu như vậy", "animation"],
+    "independent-review": ["check lại", "xem lại", "kiểm lại", "soát lại", "review lại", "review", "phản biện",
+                           "độc lập", "đối chiếu", "bác bỏ", "kiểm tra lại", "giống android", "không giống",
+                           "ko giống", "chả giống", "khác android", "sai so với", "parity", "re-check",
+                           "check toàn bộ", "check hết", "review toàn bộ"],
+    "ui-lint": ["icon", "emoji", "asset", "tofu", "biểu tượng", "ảnh icon", "icon bị lỗi"],
+    "acceptance-gate": ["xong chưa", "đã xong", "chốt xong", "done", "setup đúng chưa", "đúng chưa",
+                        "ổn chưa", "được chưa", "ok chưa"],
+    "port-oracle-tests": ["oracle", "port test", "test android", "parity logic", "logic nghiệp vụ",
+                          "logic không giống", "logic khác", "số liệu", "giá trị kỳ vọng", "số không khớp",
+                          "giá trị nào", "số xp", "điểm số"],
+    "regression-gate": ["hồi quy", "regression", "baseline", "tụt baseline"],
+    "security-scan": ["secret", "pii", "bảo mật", "khoá bí mật", "token lộ", "rò rỉ"],
+    "knowledge-base": ["quy tắc", "luật lõi", "knowledge base", "kb", "version kb", "cẩm nang", "kiến thức"],
+    "bug-memory": ["bug cũ", "fingerprint", "đã sửa chưa", "gặp lại", "trùng bug", "sửa rồi"],
+    "outer-loop": ["retro", "loop ngoài", "cải thiện quy trình", "lỗi lặp", "sửa cẩm nang"],
+    "orchestrate": ["điều phối", "orchestrate", "chạy feature", "trọn quy trình", "từ đầu đến cuối",
+                    "làm nốt", "làm hết", "tiếp tục", "các task", "làm tiếp", "task trên", "phải làm hết"],
     "work-queue": ["hàng đợi", "queue", "nhận việc", "danh sách việc"],
-    "run-log": ["ghi log", "run log", "runs", "nhật ký chạy", "log lại"],
-    "automate-repeat": ["tự động", "việc lặp", "auto", "80%", "lặp lại", "automation"],
+    "run-log": ["ghi log", "run log", "nhật ký chạy", "log lại"],
+    "automate-repeat": ["tự động hoá", "việc lặp", "auto được", "80%", "lặp lại", "automation"],
     "my-replica": ["thay tôi", "bản sao", "replica", "quyết thay", "trợ lý của tôi"],
 }
-# Nhóm cấm-tự-quyết → KHÔNG route sang skill, mà LEO LÊN CEO (luật lõi §1/§2).
-ESCALATE = ["merge", "phát hành", "release", "đẩy store", "tiền", "thanh toán", "đăng nhập",
-            "xoá dữ liệu", "xóa dữ liệu", "api contract", "đổi schema", "thêm thư viện", "đổi kiến trúc"]
+# Nhóm cấm-tự-quyết → KHÔNG route sang skill, mà LEO LÊN CEO (luật lõi §1/§2). Chỉ bắt ĐỘNG TỪ ĐỔI,
+# không bắt câu HỎI/kiểm (vd "domain đã đúng chưa" là verify, không phải đổi).
+ESCALATE = ["merge", "phát hành", "release", "đẩy store", "lên store", "tiền", "thanh toán", "in-app",
+            "đăng nhập", "xoá dữ liệu", "xóa dữ liệu", "đổi api contract", "sửa api contract",
+            "đổi schema", "thêm thư viện", "đổi kiến trúc", "sửa config phát hành"]
 
 
 def cmd_route(a):
@@ -177,14 +194,14 @@ def cmd_route(a):
     scored = []
     for skill, kws in INTENT.items():
         hit = [k for k in kws if k in text]
-        if hit: scored.append((len(hit), skill, hit))
-    scored.sort(reverse=True)
+        if hit: scored.append((len(hit), sum(len(k) for k in hit), skill, hit))   # nhiều khớp + từ khoá dài/cụ thể → ưu tiên
+    scored.sort(key=lambda x: (x[0], x[1]), reverse=True)
     if not scored:
         print("Không khớp từ khoá rõ ràng → bắt đầu `orchestrate` (nó tự route qua các phòng),")
         print("hoặc `research-idea` nếu việc còn mơ hồ. (Mở rộng INTENT trong agent_cli.py nếu hay gặp.)")
         return
     print(f'Định tuyến cho: "{text[:70]}"')
-    for i, (n, skill, hit) in enumerate(scored[:3]):
+    for i, (n, _l, skill, hit) in enumerate(scored[:3]):
         tag = "→ DÙNG" if i == 0 else "  (hoặc)"
         print(f"  {tag} {skill:<20} (khớp: {', '.join(hit)})")
     print(f"\nGợi ý: chạy `agent_cli.py skill {scored[0][1]}` để xem các bước.")
