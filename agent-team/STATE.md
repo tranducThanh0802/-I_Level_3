@@ -40,7 +40,7 @@ Nhánh `agent-skills-org` có **8 commit** đã sạch + fast-forward được (
 - Đã sửa bug outer_loop (đếm theo loại). Đã sửa init_project .gitignore + baseline_source/human_minutes.
 
 ## Việc kế tiếp (theo thứ tự)
-1. **CEO merge** `agent-skills-org` → main + `git push` + `git push --tags` (đẩy tag là việc người — luật #2). Nhánh có thêm việc chưa commit: v2.2.0 (A8/A9 — `access-control.md`, `CHANGELOG.md`, `_ack` redact, ADR-038).
+1. **CEO merge** `agent-skills-org` → main (luật #2: agent KHÔNG merge). Nhánh ĐÃ commit+push đầy đủ (commit `043778d` = v2.2.0+v2.2.1: A8/A9 + vá loop, ADR-038) — agent chỉ chạy tới bước này, merge là của người. Tag `vX.Y.Z` nếu muốn: `git push --tags` (đẩy tag là việc người).
 2. **A1/A3/A5/A6 lên 5 — ĐANG CHẠY**: intake `--loop` đã bật (đòn bẩy chung). Để NHIỀU người gửi việc qua Discord vài tuần → `runs.jsonl` tự tích log đa-requester. **24/7 thật**: chạy `python3 scripts/discord_intake.py --loop` trong terminal máy host (hoặc cron/launchd) — đừng chỉ dựa phiên Claude.
 3. **A8 mức 5 hoàn tất**: người thực hiện phân quyền kênh Discord theo `docs/access-control.md` + chạy thử checklist thu hồi.
 4. **A2 mốc 5**: thêm vài vòng cập nhật KB có version chứng minh đầu ra tốt lên.
