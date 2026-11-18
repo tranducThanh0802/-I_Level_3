@@ -427,3 +427,20 @@ Chờ chủ dự án duyệt trước khi thành ADR chính thức. Nguồn: `do
   `agent-team/{ORG,RUBRIC-MAP}.md`, `agent-team/acceptance/_TEMPLATE.md`. Luồng chuẩn 1 feature ghép skill (A1)
   đã chạy thật (Word of the Day qua gate + review độc lập). Còn: tích luỹ log dùng thật (A3/A6), version KB (A2→4/5), A7.
 - **Người duyệt:** CEO yêu cầu trực tiếp.
+
+## ADR-038 — Siết A8 (ẩn danh lúc đẩy ra + runbook phân quyền/thu hồi) & A9 (SemVer có tầng)
+- **Ngày:** 2026-11-17
+- **Bối cảnh:** Tự chấm rubric: A8=3, A9=4 đang kéo tổng xuống dưới 4. A8 thiếu "phân quyền ai đọc gì +
+  lọc/ẩn danh trước khi dữ liệu rời hệ thống" và "cơ chế thu hồi quyền"; A9 thiếu "phân tầng version theo độ lớn".
+- **Quyết định:**
+  1. **A8:** `_ack()` trong `discord_intake.py` nay cũng chạy `redact()` (vốn đã có ở `post_to_discord.py`)
+     → MỌI đường đẩy ra Discord đều ẩn secret/email. Thêm `docs/access-control.md`: phân loại dữ liệu
+     (loại nào đọc ở đâu) + phân quyền kênh theo vai + runbook thu hồi quyền khi offboard (reset bot token,
+     gỡ quyền kênh, xoay webhook).
+  2. **A9:** thêm `agent-team/CHANGELOG.md` theo SemVer, phân tầng MAJOR/MINOR/PATCH ánh xạ cột mốc
+     (v0.1 → v2.x) + quy ước "mở lại version cũ" bằng `git tag`.
+- **Vì sao:** A8 mức-4 cần filter trước khi rời hệ thống (redact) + phân quyền (doc); mức-5 cần cơ chế thu
+  hồi (runbook). A9 mức-5 cần phân tầng theo độ lớn (SemVer MAJOR/MINOR).
+- **Hệ quả:** sửa `discord_intake.py` (_ack redact); thêm `docs/access-control.md`, `CHANGELOG.md`; git tag
+  `v2.1.0` cho trạng thái commit hiện tại. **KHÔNG nới quyền agent** — luật #2 giữ nguyên (agent không merge/đẩy tag).
+- **Người duyệt:** CEO ("làm theo recommend").

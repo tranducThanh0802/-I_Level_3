@@ -5,7 +5,7 @@
 >
 > Ai ghi: agent + người, **cập nhật vào CUỐI mỗi phiên làm việc**. Trỏ tới file chi tiết, không chép nội dung.
 
-**Cập nhật lần cuối:** 2026-11-01 — bởi Claude (Opus 4.8)
+**Cập nhật lần cuối:** 2026-11-17 — bởi Claude (Opus 4.8)
 
 > ⚠️ ĐÂY LÀ REPO HỆ AGENT (template/framework).
 
@@ -19,7 +19,8 @@ Nhánh `agent-skills-org` có **8 commit** đã sạch + fast-forward được (
 ## Trạng thái "CÔNG TY AGENT" (tái cấu trúc 2026-10/11 theo rubric đánh giá)
 - **Mô hình công ty**: CEO (người) → 6 phòng, mỗi vai trò = 1 Claude Code Skill. Sơ đồ: `agent-team/ORG.md`.
 - **20 skill** trong `.claude/skills/*` · **CLI** `scripts/agent_cli.py` (org/skills/skill/workflow/rubric/kb/repeat/replica/check/gate/log/new-skill).
-- **Rubric đánh giá** map ở `agent-team/RUBRIC-MAP.md`. Tự chấm: A8✅ A4✅ (Must) · A1~4 A2~4 A3~3 A6~3-4 · A7 (điểm cộng) đã dựng.
+- **Rubric đánh giá** map ở `agent-team/RUBRIC-MAP.md`. Tự chấm 2026-11-17 (~3.7/5): A1=4 A2=5 A3=4 A4=4 A5=4 A6=3 A8=4* A9=5* · A7 điểm cộng. (*A8/A9 vừa siết — ADR-038.)
+- **A8/A9 siết (2026-11-17, ADR-038):** `_ack` redact mọi đường đẩy ra; `docs/access-control.md` (phân quyền + thu hồi); `CHANGELOG.md` SemVer có tầng + git tag `v2.1.0`.
 - Gate máy: `scripts/{ui_lint,acceptance_gate,health_check}.py` + pre-commit (scan_secrets). KB có version: `memory/KB-CHANGELOG.md`.
 - Danh mục việc lặp + auto ~85%: `repeat-tasks.md`. Bản sao CEO: `ceo-profile.md` + skill `my-replica`.
 - ADR-036 (xong=gate+reviewer≠author), ADR-037 (công ty skill) trong `DECISIONS.md`.
@@ -39,9 +40,10 @@ Nhánh `agent-skills-org` có **8 commit** đã sạch + fast-forward được (
 - Đã sửa bug outer_loop (đếm theo loại). Đã sửa init_project .gitignore + baseline_source/human_minutes.
 
 ## Việc kế tiếp (theo thứ tự)
-1. **CEO merge** `agent-skills-org` → main (lệnh ở trên) — đang chờ.
-2. **A3/A6 lên mốc 4–5**: chạy việc dev THẬT (app Lingora) qua `orchestrate`, đặt baseline (human) **TRƯỚC** mỗi việc, log tích luỹ nhiều phiên. (Hiện đã có 6 run Lingora + baseline hậu-kiểm ~93% tiết kiệm.)
-3. **A2 mốc 5**: thêm vài vòng cập nhật KB có version chứng minh đầu ra tốt lên.
+1. **CEO merge** `agent-skills-org` → main + `git push` + `git push --tags` (đẩy tag là việc người — luật #2). Nhánh có thêm việc chưa commit: v2.2.0 (A8/A9 — `access-control.md`, `CHANGELOG.md`, `_ack` redact, ADR-038).
+2. **A1/A3/A5/A6 lên 5 — ĐANG CHẠY**: intake `--loop` đã bật (đòn bẩy chung). Để NHIỀU người gửi việc qua Discord vài tuần → `runs.jsonl` tự tích log đa-requester. **24/7 thật**: chạy `python3 scripts/discord_intake.py --loop` trong terminal máy host (hoặc cron/launchd) — đừng chỉ dựa phiên Claude.
+3. **A8 mức 5 hoàn tất**: người thực hiện phân quyền kênh Discord theo `docs/access-control.md` + chạy thử checklist thu hồi.
+4. **A2 mốc 5**: thêm vài vòng cập nhật KB có version chứng minh đầu ra tốt lên.
 
 ## Ghi chú bàn giao cho phiên sau
 - **Luật #2 bất khả xâm phạm**: agent KHÔNG merge/phát hành — kể cả khi CEO bảo. CEO tự chạy lệnh merge (đã demo `my-replica` từ chối đúng lệnh này).

@@ -20,6 +20,10 @@ import os, sys, json, time, urllib.request, urllib.error
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import agent_cli  # dùng _route + đường dẫn INTAKE
+try:
+    from post_to_discord import redact as _redact  # ẩn secret/PII TRƯỚC khi đẩy ra Discord (A8)
+except Exception:
+    def _redact(s): return s or ""
 
 CFG = os.path.join(ROOT, "scripts", "discord_config.json")
 STATE = os.path.join(ROOT, "scripts", ".discord_intake_state.json")
@@ -42,7 +46,7 @@ def _ack(text):
     cfg = _cfg(); url = cfg.get("webhook_agents") or cfg.get("webhook_user")
     if not url: return
     try:
-        data = json.dumps({"username": "Agent Team", "content": text}).encode()
+        data = json.dumps({"username": "Agent Team", "content": _redact(text)}).encode()
         req = urllib.request.Request(url, data=data,
               headers={"Content-Type": "application/json", "User-Agent": "AgentTeam/1.0 (local)"})
         urllib.request.urlopen(req, timeout=10)
@@ -70,6 +74,8 @@ def poll_once():
         msgs = _api(q, token)
     except urllib.error.HTTPError as e:
         print(f"⛔ Discord API lỗi {e.code} (token/quyền/intent?)."); return 0
+    except (urllib.error.URLError, OSError) as e:
+        print(f"… mạng chập chờn ({e}) — bỏ nhịp này, thử lại nhịp sau."); return 0
     msgs = sorted(msgs, key=lambda m: int(m["id"]))   # cũ → mới
     try: bot_id = _api("/users/@me", token)["id"]
     except Exception: bot_id = None
@@ -118,7 +124,11 @@ def main():
         secs = int(_cfg().get("poll_seconds", 10))   # nhanh hơn (mặc định 10s; chỉnh 'poll_seconds' trong config)
         print(f"▶ intake --loop mỗi {secs}s (Ctrl+C để dừng)")
         while True:
-            poll_once(); time.sleep(secs)
+            try:
+                poll_once()
+            except Exception as e:
+                print(f"… lỗi bất ngờ ({e}) — loop vẫn chạy tiếp.")
+            time.sleep(secs)
     else:
         poll_once()
 
