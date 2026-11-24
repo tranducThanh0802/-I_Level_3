@@ -1,6 +1,9 @@
 # Bí mật — KHÔNG đưa lên repo chung
 scripts/discord_config.json
 scripts/.discord_state.json
+scripts/.env.jira
+agent-team/intake/jira-*.jsonl
+agent-team/intake/jira-summary-*.json
 
 # Rác hệ thống
 .DS_Store
