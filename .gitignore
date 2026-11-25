@@ -8,3 +8,4 @@ scripts/.discord_state.json
 
 # Feed live ephemeral (theo dõi lúc chạy, không phải hồ sơ)
 agent-team/live/activity.jsonl
+.env

@@ -21,6 +21,7 @@
 - (repo template: không có task code dở — dùng làm khuôn cho project mới qua `init_project.py`)
 
 ## Đã xong gần đây (để không làm lại)
+- 2026-11-20: v1.1.0 — `usage_report.py`, README, VERSION, CHANGELOG, ADR-036 (mức 3 rubric).
 - 2026-09-27: Loop ngoài kích hoạt thật lần đầu (ADR-035) — thêm cẩm nang test-coverage, gác hồi quy 20/20.
 - Đã sửa bug outer_loop (đếm theo loại). Đã sửa init_project .gitignore + baseline_source/human_minutes.
 
