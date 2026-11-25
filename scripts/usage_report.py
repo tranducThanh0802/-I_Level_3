@@ -93,6 +93,8 @@ def main():
             evid[it["id"]] = sorted({r["run_id"] for r in hits})
         auto = [it for it in items if it["automated"]]
         proven = [it for it in auto if evid[it["id"]]]
+        sig = catalog.get("confirmed_by")
+        print("  Chữ ký danh mục: " + (f"{sig} ({catalog.get('confirmed_role', '?')}), {catalog.get('confirmed_at', '?')}" if sig else "CHƯA CÓ → A6 trần 2"))
         print(f"  Danh mục: {len(items)} việc, AI làm {len(auto)} ({round(100 * len(auto) / len(items))}%), người giữ {len(items) - len(auto)} (checkpoint)")
         print(f"  Có bằng chứng log: {len(proven)}/{len(auto)} việc AI làm = {round(100 * len(proven) / max(len(auto), 1))}%  ← con số dùng cho A6")
         for it in items:
