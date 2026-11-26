@@ -15,6 +15,9 @@ __pycache__/
 # Feed live ephemeral (theo dõi lúc chạy, không phải hồ sơ)
 agent-team/live/activity.jsonl
 
+# Biến môi trường chung
+.env
+
 # Intake runtime (dữ liệu nạp từ Discord/người — của từng project)
 agent-team/intake/*.md
 agent-team/intake/channel-log.jsonl

@@ -444,3 +444,11 @@ Chờ chủ dự án duyệt trước khi thành ADR chính thức. Nguồn: `do
 - **Hệ quả:** sửa `discord_intake.py` (_ack redact); thêm `docs/access-control.md`, `CHANGELOG.md`; git tag
   `v2.1.0` cho trạng thái commit hiện tại. **KHÔNG nới quyền agent** — luật #2 giữ nguyên (agent không merge/đẩy tag).
 - **Người duyệt:** CEO ("làm theo recommend").
+
+## ADR-036 — Bằng chứng dùng thật bằng log + phiên bản có mục tiêu/thời hạn (mức 3 rubric)
+- **Ngày:** 2026-11-20
+- **Quyết định:** thêm `scripts/usage_report.py` đọc `runs.jsonl` + `docs/task-catalog.json` + `docs/usage-targets.json` để chứng minh tần suất dùng
+  và tỷ lệ tự động hoá **bằng log**; chỉ tiêu chưa có `confirmed_by` của người thì KHÔNG tính đạt; run có `baseline_source != human` bị loại khỏi
+  phép tính tiết kiệm. Thêm `VERSION` + `CHANGELOG.md` (mỗi phiên bản: mục tiêu + thời hạn), README dựng lại.
+- **Lý do:** đề bài §6 nói "bằng log chứ không bằng lời"; trước đó không có chỗ nào tính từ log, và agent có thể tự đặt chỉ tiêu rồi tự chấm đạt.
+- **Đánh đổi:** danh mục việc lặp gắn tên bước trong log bằng tay (`log_steps`); tên bước không chuẩn hoá sẽ hiện ở mục "chưa gắn" để sửa.
